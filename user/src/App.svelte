@@ -1,19 +1,23 @@
 <script>
     import config from "../src/assets/config";
     import { onMount } from "svelte";
-    import { slide } from 'svelte/transition';
+    import Loader from './components/loader.svelte';
 
     let questions = null;
     let settings = null;
     let showQuestions = false;
     let showNoQuestions = false;
     let showUserForm = false;
+    let showResult = false;
 
     let userData = null;
     let color = null;
 
     let agesGroupArray = ["18-24", "25-35", "36-45", "46-55", "55+"];
     let sexArray = ["Мужской", "Женский"];
+
+    let loading = true;
+    let chartData;
 
     onMount(async () => {
       const req = await fetch(`${config.serverUrl}/api/?key=${config.testId}`, {
@@ -33,10 +37,12 @@
             showNoQuestions = false;
             showUserForm = true;
             color = settings.image;
+            loading = false;
       } else {
             showQuestions = false;
             showUserForm = false;
             showNoQuestions = true;
+            loading = false;
       }
 
     });
@@ -44,34 +50,51 @@
     let selected = [];
 
     async function saveData(e){
-        if (Object.keys(selected).length < questions.questions.length){
-            alert("no")
-            return;
-        } else {
-            alert("yes")
-            console.log(selected)
+        // if (Object.keys(selected).length < questions.questions.length){
+        //     alert("no")
+        //     return;
+        // } else {
+        //     alert("yes")
+        //     console.log(selected)
+        // }
+        loading = true;
+        let fortest = [];
+        for (let index = 0; index < 40; index++) {
+            fortest.push(Math.floor(Math.random() * 3) + 1)
         }
+
+        console.log(fortest);
+
         let dataObj = {
             testId:config.testId,
-            selected:selected,
+            selected:fortest, //selected
             data:userData,
         }
 
-        await fetch(`${config.serverUrl}/api/`, {
+        const res = await fetch(`${config.serverUrl}/api/`, {
             method: 'POST',
             headers: {
-            'Content-Type': 'application/json',
+                'Content-Type': 'application/json',
+
             },
             body: JSON.stringify(dataObj)
-        }).then((response) => {
-            if (response.ok) {
-                console.log(response.json());
-            }
-            throw new Error('Something went wrong');
-            }).catch((error) => {
-                console.log(error)
-        });
+		})
 
+        const json = await res.json();
+        const status = res.status;
+
+        if (status == 200) {
+            console.log(json);
+            resultChart(json);
+            loading = false;
+        }
+    }
+
+    function resultChart(result){
+        let chartValues = result
+        let chartLabels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+        let ctx;
+        let chartCanvas;
     }
 
     function saveUserForm(e){
@@ -94,6 +117,7 @@
         showQuestions = true;
     }
 </script>
+<Loader loading={loading}></Loader>
 <div class="wrapper">
     {#if showQuestions || showUserForm}
         <div class="test-background" style="background-image: url('{settings.image}')"></div>
@@ -135,7 +159,7 @@
                             <input type="text" class="form-control" id="Name" name="Name" placeholder="Введите ваше имя" />
                         </div>
                     {/if}
-                    {#if settings.userData.Fname}
+                    {#if settings.userData.FName}
                         <div class="mb-3">
                             <label for="FName">Фамилия</label>
                             <input type="text" class="form-control" id="FName" name="FName" placeholder="Введите вашу фамилию" />
@@ -190,6 +214,9 @@
     {/if}
     {#if showNoQuestions}
         <p>no data</p>
+    {/if}
+    {#if showResult}
+        <div></div>
     {/if}
 </div>
 

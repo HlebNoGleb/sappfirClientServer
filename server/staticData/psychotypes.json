@@ -1,0 +1,74 @@
+[
+    {
+        "id":0,
+        "title":"Индивидуалист ",
+        "thinkingType":"Индивидуалист thinkingType",
+        "learningWays":"Индивидуалист learningWays",
+        "characterFeatures": "Индивидуалист characterFeatures",
+        "stressReactions":"Индивидуалист stressReactions",
+        "recommendations":" Индивидуалист recommendations"
+    },
+    {
+        "id":1,
+        "title":"Инноватор ",
+        "thinkingType":"Инноватор thinkingType",
+        "learningWays":"Инноватор learningWays",
+        "characterFeatures": "Инноватор characterFeatures",
+        "stressReactions":"Инноватор stressReactions",
+        "recommendations":" Инноватор recommendations"
+    },
+    {
+        "id":2,
+        "title":"Лидер мнений ",
+        "thinkingType":"Лидер мнений thinkingType",
+        "learningWays":"Лидер мнений learningWays",
+        "characterFeatures": "Лидер мнений characterFeatures",
+        "stressReactions":"Лидер мнений stressReactions",
+        "recommendations":" Лидер мнений recommendations"
+    },
+    {
+        "id":3,
+        "title":"Модник ",
+        "thinkingType":"Модник thinkingType",
+        "learningWays":"Модник learningWays",
+        "characterFeatures": "Модник characterFeatures",
+        "stressReactions":"Модник stressReactions",
+        "recommendations":" Модник recommendations"
+    },
+    {
+        "id":4,
+        "title":"Консерватор ",
+        "thinkingType":"Консерватор thinkingType",
+        "learningWays":"Консерватор learningWays",
+        "characterFeatures": "Консерватор characterFeatures",
+        "stressReactions":"Консерватор stressReactions",
+        "recommendations":" Консерватор recommendations"
+    },
+    {
+        "id":5,
+        "title":"Чувствительный ",
+        "thinkingType":"Чувствительный thinkingType",
+        "learningWays":"Чувствительный learningWays",
+        "characterFeatures": "Чувствительный characterFeatures",
+        "stressReactions":"Чувствительный stressReactions",
+        "recommendations":" Чувствительный recommendations"
+    },
+    {
+        "id":6,
+        "title":"Замкнутый ",
+        "thinkingType":"Замкнутый thinkingType",
+        "learningWays":"Замкнутый learningWays",
+        "characterFeatures": "Замкнутый characterFeatures",
+        "stressReactions":"Замкнутый stressReactions",
+        "recommendations":" Замкнутый recommendations"
+    },
+    {
+        "id":7,
+        "title":"Реалист ",
+        "thinkingType":"Реалист thinkingType",
+        "learningWays":"Реалист learningWays",
+        "characterFeatures": "Реалист characterFeatures",
+        "stressReactions":"Реалист stressReactions",
+        "recommendations":" Реалист recommendations"
+    }
+]

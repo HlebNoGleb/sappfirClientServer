@@ -3,6 +3,7 @@ const router = express.Router()
 const Questions = require('../models/testQuestions');
 const Domain = require('../models/domains');
 const Settings = require('../models/testSettings');
+var psychotypes = require('../staticData/psychotypes.json')
 
 router.use(function(req, res, next) {
 	res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
@@ -36,24 +37,72 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
 	console.log(req.body);
 	let answers = req.body.selected;
-	let _stagesSum = [];
-	// только 40 вопросов и ответов
-	for (let index = 0; index < answers.length; index += 5) {
-		let _stageSum = answers.slice(index, index + 5);
-		let sum = _stageSum.reduce((a, b) => a + b);
-		_stagesSum.push(sum);
+	let userData = req.body.data;
+	let sum = math(answers);
+	let max = getMax(sum);
+	let psychotypesData = psychotypes.filter((item) => {
+		return max.includes(item.id);
+	});
+
+	let result = {
+		sum: sum,
+		max: max,
+		psychotypesData: psychotypesData,
 	}
 
-	console.log(_stagesSum);
+	res.send({retObj});
 })
 
 router.put('/', async (req, res) => {
-
 	res.send('Got a PUT request')
 })
 
 router.delete('/user', (req, res) => {
   res.send('Got a DELETE request')
 })
+
+function math(answers){
+	let stageSum = [];
+	// только 40 вопросов и ответов
+	for (let index = 0; index < answers.length; index += 5) {
+	  let stage = answers.slice(index, index + 5);
+	//   console.log(stage);
+	  let sum = stage.reduce((a, b) => a + b);
+	//   console.log(sum)
+	  stageSum.push(sum);
+	}
+	// console.log(stageSum);
+
+	return stageSum;
+}
+
+function getMax(sum){
+	console.log(sum);
+
+	let firstMax = checkMax(sum);
+
+	for (let i = 0; i < firstMax.length; i++) {
+		sum[firstMax[i]] = 0;
+	}
+
+	let secondMax = checkMax(sum);
+	let max = [...firstMax, secondMax[0]].sort();
+	console.log(max);
+
+	return max;
+}
+
+function checkMax(sum){
+	const max = Math.max(...sum);
+	const maxIndexes = [];
+
+	for (let i = 0; i < sum.length; i++) {
+		if (sum[i] === max && maxIndexes.length < 2) {
+			maxIndexes.push(i);
+		}
+	}
+
+	return maxIndexes;
+}
 
 module.exports = router
