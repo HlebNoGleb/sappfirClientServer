@@ -1,0 +1,12 @@
+{
+    "name": "Название теста",
+    "description": "Описание теста",
+    "help": "Помощь по тесту",
+    "image": "https://static.vecteezy.com/system/resources/previews/001/849/553/original/modern-gold-background-free-vector.jpg",
+    "color": {
+      "mainColor": "#ff0000",
+      "secondaryColor": "#0000ff",
+      "tertiaryColor": "#008000"
+    },
+    "type": 1
+}
