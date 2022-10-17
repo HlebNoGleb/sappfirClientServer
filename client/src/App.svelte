@@ -4,6 +4,8 @@
   import DomainSettingsForm from './components/domainSettingsForm.svelte';
   import DomainAddForm from './components/domainAddForm.svelte';
   import QuestionsForm from './components/questionsForm.svelte';
+  import ResultInfo from './components/resultInfo.svelte';
+  import ResultClientInfo from './components/resultClientInfo.svelte';
   import {onMount} from "svelte";
   import config from "./assets/config.js";
 
@@ -15,6 +17,8 @@
   let domainSettings = false;
   let showBack = false;
   let questionsForm = false;
+  let resultInfo = false;
+  let resultClientInfo = false;
   let selectedTest = {}
 
 	onMount(async () => {
@@ -42,7 +46,7 @@
 	});
 
 	function updateState(data) {
-		// console.log(data);
+		console.log(data);
 		if (data.detail.state.loading !== undefined) {
 			loading = data.detail.state.loading;
 			// console.log(loading);
@@ -74,6 +78,20 @@
 				selectedTest.id = data.detail.data.id;
 			}
 		}
+
+		if (data.detail.state.resultInfo !== undefined) {
+			resultInfo = data.detail.state.resultInfo;
+			if (resultInfo){
+				selectedTest.id = data.detail.data.id;
+			}
+		}
+
+		if (data.detail.state.resultClientInfo !== undefined) {
+			resultClientInfo = data.detail.state.resultClientInfo;
+			if (resultClientInfo){
+				selectedTest.id = data.detail.data.id;
+			}
+		}
     }
 </script>
 
@@ -93,6 +111,14 @@
 
 {#if questionsForm}
 	<QuestionsForm on:updateState={updateState} id={selectedTest.id}/>
+{/if}
+
+{#if resultClientInfo}
+	<ResultClientInfo on:updateState={updateState} id={selectedTest.id}/>
+{/if}
+
+{#if resultInfo}
+	<ResultInfo on:updateState={updateState} id={selectedTest.id}/>
 {/if}
 
 <style>

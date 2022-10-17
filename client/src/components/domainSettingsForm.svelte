@@ -53,11 +53,14 @@
         const data = {};
         let color = {};
         let userData = {};
+        let resultSettings = {};
 		formData.forEach((value, key) => {
             if (key.includes('Color')){
                 color[key] = value;
             } else if (key.includes('userData')){
                 userData[key.slice(8)] = value;
+            } else if (key.includes('resultSettings')){
+                resultSettings[key.slice(14)] = value;
             } else {
                 data[key] = value;
             }
@@ -65,6 +68,7 @@
 
         data.color = color;
         data.userData = userData;
+        data.resultSettings = resultSettings;
 
 		console.log(data, update);
 
@@ -92,7 +96,15 @@
     }
 
     function editTestQuestions(id){
-        updateState({state:{domainSettings: false, questionsForm: true, loading: true}, data:{id: id}});
+        updateState({state:{domainSettings: false, questionsForm: true}, data:{id: id}});
+    }
+
+    function editResultInfo(id){
+        updateState({state:{domainSettings: false, resultInfo: true}, data:{id: id}});
+    }
+
+    function editResultClientInfo(id){
+        updateState({state:{domainSettings: false, resultClientInfo: true}, data:{id: id}});
     }
 
     function goBack(){
@@ -181,34 +193,59 @@
     <div class="mb-3">
         <label for="">Информация о пользователе</label>
         <div class="form-check form-switch">
-            <input class="form-check-input" name="userDataName" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked>
-            <label class="form-check-label" for="flexSwitchCheckDefault">Имя</label>
+            <input class="form-check-input" name="userDataName" type="checkbox" role="switch" id="userDataName" checked>
+            <label class="form-check-label" for="userDataName">Имя</label>
           </div>
           <div class="form-check form-switch">
-            <input class="form-check-input" name="userDataFName" type="checkbox" role="switch" id="flexSwitchCheckChecked">
-            <label class="form-check-label" for="flexSwitchCheckChecked">Фамилия</label>
+            <input class="form-check-input" name="userDataFName" type="checkbox" role="switch" id="userDataFName">
+            <label class="form-check-label" for="userDataFName">Фамилия</label>
           </div>
           <div class="form-check form-switch">
-            <input class="form-check-input" name="userDataEmail" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
-            <label class="form-check-label" for="flexSwitchCheckChecked">E-mail</label>
+            <input class="form-check-input" name="userDataEmail" type="checkbox" role="switch" id="userDataEmail" checked>
+            <label class="form-check-label" for="userDataEmail">E-mail</label>
           </div>
           <div class="form-check form-switch">
-            <input class="form-check-input" name="userDataPhone" type="checkbox" role="switch" id="flexSwitchCheckChecked">
-            <label class="form-check-label" for="flexSwitchCheckChecked">Телефон</label>
+            <input class="form-check-input" name="userDataPhone" type="checkbox" role="switch" id="userDataPhone">
+            <label class="form-check-label" for="userDataPhone">Телефон</label>
           </div>
           <div class="form-check form-switch">
-            <input class="form-check-input" name="userDataAge" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
-            <label class="form-check-label" for="flexSwitchCheckChecked">Возраст</label>
+            <input class="form-check-input" name="userDataAge" type="checkbox" role="switch" id="userDataAge" checked>
+            <label class="form-check-label" for="userDataAge">Возраст</label>
           </div>
           <div class="form-check form-switch">
-            <input class="form-check-input" name="userDataSex" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
-            <label class="form-check-label" for="flexSwitchCheckChecked">Пол</label>
+            <input class="form-check-input" name="userDataSex" type="checkbox" role="switch" id="userDataSex" checked>
+            <label class="form-check-label" for="userDataSex">Пол</label>
           </div>
           <div class="form-check form-switch">
-            <input class="form-check-input" name="userDataAgreeFL" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
-            <label class="form-check-label" for="flexSwitchCheckChecked">Соглашение с ФЗ-152</label>
+            <input class="form-check-input" name="userDataAgreeFL" type="checkbox" role="switch" id="userDataAgreeFL" checked>
+            <label class="form-check-label" for="userDataAgreeFL">Соглашение с ФЗ-152</label>
           </div>
     </div>
+    <div class="mb-3">
+        <label for="">Вывод результата</label>
+        <div class="form-check form-switch">
+            <input class="form-check-input" name="resultSettingsChart" type="checkbox" role="switch" id="resultSettingsChart" checked>
+            <label class="form-check-label" for="resultSettingsChart">График</label>
+        </div>
+        <div class="form-check form-switch">
+            <input class="form-check-input" name="resultSettingsInfo" type="checkbox" role="switch" id="resultSettingsInfo" checked>
+            <label class="form-check-label" for="resultSettingsInfo">Информация</label>
+        </div>
+        <div class="form-check form-switch">
+            <input class="form-check-input" name="resultSettingsClientInfo" type="checkbox" role="switch" id="resultSettingsClientInfo" checked>
+            <label class="form-check-label" for="resultSettingsClientInfo">Клиентская информация</label>
+        </div>
+        <div class="form-check form-switch">
+            <input class="form-check-input" name="resultSettingsAfterTextToggle" type="checkbox" role="switch" id="resultSettingsAfterTextToggle" checked>
+            <label class="form-check-label" for="resultSettingsAfterTextToggle">Информация после прохождения теста</label>
+        </div>
+        <div class="mb-3">
+            <label for="resultSettingsAfterText">Информация после прохождения теста</label>
+            <textarea class="form-control" id="resultSettingsAfterText" name="resultSettingsAfterText" rows="3" required>{settings.resultSettings.AfterText}</textarea>
+            <div class="form-text">*Поддерживает HTML (встроен Bootstrap 5)</div>
+        </div>
+    </div>
+
 
     <button type="button" class="btn btn-outline-primary" on:click={() => updateState({state:{domainSettings: false, domainSelect: true}})}>Назад</button>
     <button type="submit" class="btn btn-primary">Сохранить</button>
@@ -223,9 +260,15 @@
                 <div class="card-body">
                 <h5 class="card-title">{item.name}</h5>
                 <p class="card-text">{item.description}</p>
-                <button type="button" on:click={() => editTestSettings(item._id)} class="btn btn-outline-primary">Настройки</button>
-                <button type="button" on:click={() => editTestQuestions(item._id)} class="btn btn-primary">Вопросы</button>
-                <button type="button" on:click={() => deleteTest(item._id)} class="btn btn-danger">Удалить</button>
+                <div class="btn-group my-1" role="group">
+                    <button type="button" on:click={() => editTestSettings(item._id)} class="btn btn-outline-primary">Настройки</button>
+                    <button type="button" on:click={() => editTestQuestions(item._id)} class="btn btn-primary">Вопросы</button>
+                </div>
+                <div class="btn-group my-1" role="group">
+                    <button type="button" on:click={() => editResultInfo(item._id)} class="btn btn-outline-success" disabled>Расшифровка графика</button>
+                    <button type="button" on:click={() => editResultClientInfo(item._id)} class="btn btn-success">Информация клиента</button>
+                </div>
+                    <button type="button" on:click={() => deleteTest(item._id)} class="btn btn-danger">Удалить</button>
                 </div>
             </div>
         </div>

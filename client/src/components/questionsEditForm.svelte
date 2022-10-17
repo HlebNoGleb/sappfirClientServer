@@ -45,7 +45,6 @@
             data.questions = questions;
             data.testId = id;
             data.type = selectedType.id;
-
 		});
 
 		console.log(data, update);
@@ -89,7 +88,7 @@
     }
 
     function goBack(){
-        updateState({state:{domainSelect: true, questionsForm: false}});
+        updateState({state:{domainSettings: true, questionsForm: false}});
     }
 
     function updateState(data) {

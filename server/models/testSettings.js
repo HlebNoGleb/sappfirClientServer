@@ -27,6 +27,9 @@ const testSettingsSchema = new mongoose.Schema({
     },
     userData: {
         type: Object,
+    },
+    resultSettings: {
+        type: Object,
     }
 })
 

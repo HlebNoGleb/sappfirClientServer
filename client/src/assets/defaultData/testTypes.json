@@ -1,12 +1,7 @@
 [
     {
       "id": "1",
-      "name": "test1",
-      "questionsCount": 42
-    },
-    {
-      "id": "2",
-      "name": "test2",
-      "questionsCount": 50
+      "name": "Карьера",
+      "questionsCount": 40
     }
   ]

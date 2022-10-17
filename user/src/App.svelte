@@ -2,6 +2,8 @@
     import config from "../src/assets/config";
     import { onMount } from "svelte";
     import Loader from './components/loader.svelte';
+    import Chart from './components/chart.svelte';
+    import ChartInfo from './components/chartInfo.svelte';
 
     let questions = null;
     let settings = null;
@@ -17,7 +19,8 @@
     let sexArray = ["Мужской", "Женский"];
 
     let loading = true;
-    let chartData;
+    let chartData = {};
+    let psychotypesData = {};
 
     onMount(async () => {
       const req = await fetch(`${config.serverUrl}/api/?key=${config.testId}`, {
@@ -58,12 +61,11 @@
         //     console.log(selected)
         // }
         loading = true;
+
         let fortest = [];
         for (let index = 0; index < 40; index++) {
             fortest.push(Math.floor(Math.random() * 3) + 1)
         }
-
-        console.log(fortest);
 
         let dataObj = {
             testId:config.testId,
@@ -85,16 +87,8 @@
 
         if (status == 200) {
             console.log(json);
-            resultChart(json);
-            loading = false;
+            calcResult(json);
         }
-    }
-
-    function resultChart(result){
-        let chartValues = result
-        let chartLabels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-        let ctx;
-        let chartCanvas;
     }
 
     function saveUserForm(e){
@@ -116,6 +110,18 @@
         showUserForm = false;
         showQuestions = true;
     }
+
+    async function calcResult(result){
+        showResult = false;
+        chartData = [];
+        psychotypesData = [];
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        showResult = true;
+        loading = false;
+        chartData = result.result.sum;
+        psychotypesData = result.result.psychotypesData;
+    }
+
 </script>
 <Loader loading={loading}></Loader>
 <div class="wrapper">
@@ -216,7 +222,20 @@
         <p>no data</p>
     {/if}
     {#if showResult}
-        <div></div>
+        <div class="container" style="background-color:{settings.color.mainColor}">
+            {#if settings.resultSettings.Chart}
+                <Chart chartData={chartData}/>
+            {/if}
+            {#if settings.resultSettings.Info}
+                <ChartInfo psychotypesData={psychotypesData}/>
+            {/if}
+            {#if settings.resultSettings.ClientInfo}
+                <p>ClientInfo</p>
+            {/if}
+            {#if settings.resultSettings.AfterTextToggle}
+                {@html settings.resultSettings.AfterText}
+            {/if}
+        </div>
     {/if}
 </div>
 
@@ -230,10 +249,5 @@
         width: 100%;
         z-index: -1;
         transition: .5s all ease;
-    }
-
-    h1{
-        text-align: center;
-        font-weight: bold;
     }
 </style>

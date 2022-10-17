@@ -49,8 +49,8 @@ router.post('/', async (req, res) => {
 		max: max,
 		psychotypesData: psychotypesData,
 	}
-
-	res.send({retObj});
+	console.log(sum);
+	res.send({result});
 })
 
 router.put('/', async (req, res) => {
@@ -71,23 +71,23 @@ function math(answers){
 	//   console.log(sum)
 	  stageSum.push(sum);
 	}
-	// console.log(stageSum);
 
 	return stageSum;
 }
 
 function getMax(sum){
-	console.log(sum);
+	let data = [...sum];
+	// console.log(data);
 
-	let firstMax = checkMax(sum);
+	let firstMax = checkMax(data);
 
 	for (let i = 0; i < firstMax.length; i++) {
-		sum[firstMax[i]] = 0;
+		data[firstMax[i]] = 0;
 	}
 
-	let secondMax = checkMax(sum);
+	let secondMax = checkMax(data);
 	let max = [...firstMax, secondMax[0]].sort();
-	console.log(max);
+	// console.log(max);
 
 	return max;
 }
