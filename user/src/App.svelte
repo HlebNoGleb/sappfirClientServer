@@ -64,7 +64,8 @@
 
         let fortest = [];
         for (let index = 0; index < 40; index++) {
-            fortest.push(Math.floor(Math.random() * 3) + 1)
+            let rnd = Math.floor(Math.random() * 3) + 1;
+            fortest.push(rnd);
         }
 
         let dataObj = {
@@ -118,8 +119,8 @@
         await new Promise(resolve => setTimeout(resolve, 1000));
         showResult = true;
         loading = false;
-        chartData = result.result.sum;
-        psychotypesData = result.result.psychotypesData;
+        chartData = result.sum;
+        psychotypesData = result.psychotypesData;
     }
 
 </script>
@@ -134,7 +135,7 @@
                     {#each questions.questions as question, i }
                         <div class="col my-2" >
                             <div class="card">
-                                <img src={settings.image} class="card-img-top" alt="">
+                                <img src="https://i.ibb.co/S6tWQRf/1.png" class="card-img-top" alt="">
                                 <div class="card-body">
                                     <h5 class="card-title">Вопрос  #{question.id}</h5>
                                     <p class="card-text">{question.value}</p>

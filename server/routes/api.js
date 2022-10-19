@@ -37,20 +37,28 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
 	console.log(req.body);
 	let answers = req.body.selected;
-	let userData = req.body.data;
-	let sum = math(answers);
-	let max = getMax(sum);
-	let psychotypesData = psychotypes.filter((item) => {
-		return max.includes(item.id);
-	});
 
-	let result = {
-		sum: sum,
-		max: max,
-		psychotypesData: psychotypesData,
+	if (answers.length == 40 || answers.length == 80 || answers.length == 120 || answers.length == 160){
+		let userData = req.body.data;
+		let sum = math(answers);
+		let max = getMax(sum);
+		let psychotypesData = psychotypes.filter((item) => {
+			return max.includes(item.id);
+		});
+
+		let result = {
+			sum: sum,
+			max: max,
+			psychotypesData: psychotypesData,
+		}
+		res.send(result);
+		return null;
 	}
-	console.log(sum);
-	res.send({result});
+
+	let error = {error:"Ошибка"}
+	res.send(error);
+
+
 })
 
 router.put('/', async (req, res) => {
@@ -62,17 +70,39 @@ router.delete('/user', (req, res) => {
 })
 
 function math(answers){
+
+	const multiplicity = 40;
+	const sumStep = 5;
+	const resultCount = multiplicity / sumStep;
+
 	let stageSum = [];
-	// только 40 вопросов и ответов
-	for (let index = 0; index < answers.length; index += 5) {
-	  let stage = answers.slice(index, index + 5);
-	//   console.log(stage);
-	  let sum = stage.reduce((a, b) => a + b);
-	//   console.log(sum)
-	  stageSum.push(sum);
+	for (let index = 0; index < answers.length; index += sumStep) {
+		let stage = answers.slice(index, index + sumStep);
+		let sum = stage.reduce((a, b) => a + b);
+		stageSum.push(sum);
 	}
 
+	console.log(stageSum);
 	return stageSum;
+
+	// 10,  35,  60,  85, 110, 135, 160, 185,
+	// 210, 235, 260, 285, 310, 335, 360, 385,
+	// 410, 435, 460, 485, 510, 535, 560, 585
+}
+
+function sumEveryN(array, index = 0, n, ret){
+
+	for (let i = index; i < n; i++) {
+		ret.push(array[i]);
+	}
+
+	console.log(index);
+
+	if (index < array.length){
+		sumEveryN(array, index + n, n, ret);
+	}
+
+	return ret;
 }
 
 function getMax(sum){

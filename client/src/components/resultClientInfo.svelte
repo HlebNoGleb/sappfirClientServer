@@ -24,12 +24,14 @@
             const [key, value] = field;
             formDataFields.push(field);
         }
+        console.log(formDataFields);
 		psyhotypes.forEach(element => {
             let name = element.name;
             let retObj = {};
             retObj[name] = [];
             let currentIndex = 0;
             let currentObj = {};
+
             formDataFields.forEach(element => {
                 if (element[0].includes(name)){
                     let inputName = element[0].split("-")[1];
