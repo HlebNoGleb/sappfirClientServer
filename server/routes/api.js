@@ -41,7 +41,7 @@ router.post('/', async (req, res) => {
 	if (answers.length == 40 || answers.length == 80 || answers.length == 120 || answers.length == 160){
 		let userData = req.body.data;
 		let sum = math(answers);
-		let max = getMax(sum);
+		let max = getLeads(sum);
 		let psychotypesData = psychotypes.filter((item) => {
 			return max.includes(item.id);
 		});
@@ -90,48 +90,35 @@ function math(answers){
 	// 410, 435, 460, 485, 510, 535, 560, 585
 }
 
-function sumEveryN(array, index = 0, n, ret){
-
-	for (let i = index; i < n; i++) {
-		ret.push(array[i]);
-	}
-
-	console.log(index);
-
-	if (index < array.length){
-		sumEveryN(array, index + n, n, ret);
-	}
-
-	return ret;
-}
-
-function getMax(sum){
-	let data = [...sum];
-	// console.log(data);
-
-	let firstMax = checkMax(data);
-
-	for (let i = 0; i < firstMax.length; i++) {
-		data[firstMax[i]] = 0;
-	}
-
-	let secondMax = checkMax(data);
-	let max = [...firstMax, secondMax[0]].sort();
-	// console.log(max);
-
-	return max;
-}
-
-function checkMax(sum){
-	const max = Math.max(...sum);
-	const maxIndexes = [];
-
+function getLeads(sum){
+	let result = [];
 	for (let i = 0; i < sum.length; i++) {
-		if (sum[i] === max && maxIndexes.length < 2) {
-			maxIndexes.push(i);
+		if (i + 1 < sum.length){
+			result.push(sum[i] * sum[i+1]);
+		} else {
+			result.push(sum[i] * sum[0]);
 		}
 	}
 
+	console.log(result);
+	let max = findMax(result, 3)
+	return max;
+}
+
+function findMax(array, maxCount){
+	let maxIndexes = [];
+	let mMax = Math.max(...array);
+	for (let i = 0; i < maxCount; i++) {
+		let max = Math.max(...array);
+		if (mMax / 3 * 2 < max){
+			console.log(max);
+			let maxIndex = array.indexOf(max);
+			maxIndexes.push(maxIndex);
+			array[maxIndex] = 0;
+		}
+	}
+
+	console.log(maxIndexes);
 	return maxIndexes;
 }
 
