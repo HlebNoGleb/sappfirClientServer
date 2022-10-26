@@ -107,6 +107,10 @@
         updateState({state:{domainSettings: false, resultClientInfo: true}, data:{id: id}});
     }
 
+    function showAnswers(id){
+        updateState({state:{domainSettings: false, answers: true}, data:{id: id}});
+    }
+
     function goBack(){
         updateState({state:{domainSelect: true, domainSettings: false}});
     }
@@ -267,6 +271,9 @@
                 <div class="btn-group my-1" role="group">
                     <button type="button" on:click={() => editResultInfo(item._id)} class="btn btn-outline-success" disabled>Расшифровка графика</button>
                     <button type="button" on:click={() => editResultClientInfo(item._id)} class="btn btn-success">Информация клиента</button>
+                </div>
+                <div class="btn-group my-1" role="group">
+                    <button type="button" on:click={() => showAnswers(item._id)} class="btn btn-outline-info">Ответы</button>
                 </div>
                     <button type="button" on:click={() => deleteTest(item._id)} class="btn btn-danger">Удалить</button>
                 </div>

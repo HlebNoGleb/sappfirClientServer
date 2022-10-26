@@ -30,6 +30,9 @@ const testSettingsSchema = new mongoose.Schema({
     },
     resultSettings: {
         type: Object,
+    },
+    resultClientData:{
+        type: Object,
     }
 })
 

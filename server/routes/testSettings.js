@@ -42,6 +42,7 @@ router.post('/', async (req, res) => {
 router.put('/', async (req, res) => {
 	const filter = {_id: req.body._id}
 	const update = req.body;
+	console.log(filter);
 	try {
 		const saveResult = await Settings.findOneAndUpdate(filter, update);
 		res.status(201).json(saveResult)

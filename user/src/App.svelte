@@ -4,6 +4,7 @@
     import Loader from './components/loader.svelte';
     import Chart from './components/chart.svelte';
     import ChartInfo from './components/chartInfo.svelte';
+    import ClientInfo from './components/clientInfo.svelte';
 
     let questions = null;
     let settings = null;
@@ -21,6 +22,7 @@
     let loading = true;
     let chartData = {};
     let psychotypesData = {};
+    let clientInfo = {};
 
     onMount(async () => {
       const req = await fetch(`${config.serverUrl}/api/?key=${config.testId}`, {
@@ -116,12 +118,16 @@
         showResult = false;
         chartData = [];
         psychotypesData = [];
+        clientInfo = [];
         await new Promise(resolve => setTimeout(resolve, 1000));
         showResult = true;
         loading = false;
         chartData = result.sum;
         psychotypesData = result.psychotypesData;
+        clientInfo = result.clientInfo;
     }
+
+    let test = true;
 
 </script>
 <Loader loading={loading}></Loader>
@@ -131,25 +137,47 @@
         {#if showQuestions}
             <div class="container" style="background-color:{settings.color.mainColor}">
                 <form on:submit|preventDefault={saveData}>
-                <div class="row row-cols-1 row-cols-md-2 g-2" >
+                <div class="row row-cols-1 row-cols-md-1 g-2" class:row-cols-md-2={test}>
                     {#each questions.questions as question, i }
                         <div class="col my-2" >
-                            <div class="card">
-                                <img src="https://i.ibb.co/S6tWQRf/1.png" class="card-img-top" alt="">
-                                <div class="card-body">
-                                    <h5 class="card-title">Вопрос  #{question.id}</h5>
-                                    <p class="card-text">{question.value}</p>
-                                    {#each questions.answers as answer}
-                                        <div class="form-check">
-                                            <input class="form-check-input" bind:group={selected[i]} type="radio" value="{answer.id}" checked id="{question.id}_{answer.id}">
-                                            <label class="form-check-label" for="{question.id}_{answer.id}">{answer.value}</label>
-                                        </div>
-                                    {/each}
+                            {#if test}
+                                <div class="card">
+                                    <img src="https://picsum.photos/200" class="card-img-top" alt="">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Вопрос  #{question.id}</h5>
+                                        <p class="card-text">{question.value}</p>
+                                        {#each questions.answers as answer}
+                                            <div class="form-check">
+                                                <input class="form-check-input" bind:group={selected[i]} type="radio" value="{answer.id}" checked id="{question.id}_{answer.id}">
+                                                <label class="form-check-label" for="{question.id}_{answer.id}">{answer.value}</label>
+                                            </div>
+                                        {/each}
+                                    </div>
                                 </div>
-                            </div>
+                            {:else}
+                                <div class="card mb-3">
+                                    <div class="row g-0">
+                                        <div class="col-md-4">
+                                            <img src="https://picsum.photos/200" class="card-img-top" alt="">
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Вопрос  #{question.id}</h5>
+                                                <p class="card-text">{question.value}</p>
+                                                {#each questions.answers as answer}
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" bind:group={selected[i]} type="radio" value="{answer.id}" checked id="{question.id}_{answer.id}">
+                                                        <label class="form-check-label" for="{question.id}_{answer.id}">{answer.value}</label>
+                                                    </div>
+                                                {/each}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {/if}
                         </div>
                     {/each}
-                    </div>
+                </div>
                     <div class="d-flex justify-content-end g-2">
                         <!-- <button type="button" class="btn btn-outline-primary mx-2" on:click={}>Сбросить</button> -->
                         <button type="submit" class="btn btn-primary">Отправить</button>
@@ -189,7 +217,7 @@
                             <label for="">Выберите ваш возраст</label>
                             {#each agesGroupArray as ageGroup, i}
                                 <div class="form-check mb-1">
-                                    <input class="form-check-input" name="Age" type="radio" value={i} id="ageGroup-{i}" >
+                                    <input class="form-check-input" name="Age" type="radio" value={ageGroup} id="ageGroup-{i}" >
                                     <label class="form-check-label" for="ageGroup-{i}">{ageGroup}</label>
                                 </div>
                             {/each}
@@ -200,7 +228,7 @@
                             <label for="">Выберите ваш пол</label>
                             {#each sexArray as sex, i}
                                 <div class="form-check mb-1">
-                                    <input class="form-check-input" name="Sex" type="radio" value={i} id="sex-{i}" >
+                                    <input class="form-check-input" name="Sex" type="radio" value={sex} id="sex-{i}" >
                                     <label class="form-check-label" for="sex-{i}">{sex}</label>
                                 </div>
                             {/each}
@@ -231,7 +259,7 @@
                 <ChartInfo psychotypesData={psychotypesData}/>
             {/if}
             {#if settings.resultSettings.ClientInfo}
-                <p>ClientInfo</p>
+                <ClientInfo clientInfo={clientInfo}/>
             {/if}
             {#if settings.resultSettings.AfterTextToggle}
                 {@html settings.resultSettings.AfterText}

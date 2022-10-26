@@ -7,6 +7,8 @@
     const dispatch = createEventDispatcher();
 
     export let id;
+    console.log(id);
+    let update = false;
 
     function updateState(data) {
         dispatch('updateState', data)
@@ -16,15 +18,17 @@
         updateState({state:{resultClientInfo: false, domainSettings: true}});
     }
 
-    function saveResultClientInfo(e) {
+    async function saveResultClientInfo(e) {
         const formData = new FormData(e.target);
-        let data = [];
         const formDataFields = [];
+        let data = {};
+        let finalObj = {}
+
         for (let field of formData) {
             const [key, value] = field;
             formDataFields.push(field);
         }
-        console.log(formDataFields);
+
 		psyhotypes.forEach(element => {
             let name = element.name;
             let retObj = {};
@@ -51,23 +55,25 @@
                 }
             });
             retObj[name].push(currentObj);
-            console.log(retObj);
+            Object.assign(data, retObj);
         });
-    }
 
-    let obj = {
-        maverik:[
-            {
-                title: 1234,
-                description: 12345,
-                link: 123456,
+        Object.assign(finalObj, {resultClientData: data})
+        Object.assign(finalObj, {_id: id});
+
+        console.log(finalObj);
+
+        const res = await fetch(`http://localhost:3001/settings/`, {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json',
             },
-            {
-                title: 1234,
-                description: 12345,
-                link: 123456,
-            }
-        ]
+            body: JSON.stringify(finalObj),
+		})
+
+		const json = await res.json();
+		let result = JSON.stringify(json);
+        console.log(result);
     }
 
 </script>

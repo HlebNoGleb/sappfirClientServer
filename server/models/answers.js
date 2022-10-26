@@ -1,27 +1,11 @@
 const mongoose = require('mongoose')
 const answersScheme = new mongoose.Schema({
-    name: {
-        type: String,
+    userData: {
+        type: Object,
         required: true,
     },
-    fname: {
-        type: String,
-        required: true,
-    },
-    email: {
-        type: String,
-        required: true,
-    },
-    phone: {
-        type: String,
-        required: true,
-    },
-    age: {
-        type: String,
-        required: true,
-    },
-    sex: {
-        type: String,
+    answers: {
+        type: Array,
         required: true,
     },
     sum: {
@@ -30,6 +14,14 @@ const answersScheme = new mongoose.Schema({
     },
     max: {
         type: Array,
+        required: true,
+    },
+    leadPsychotypes: {
+        type: Array,
+        required: true,
+    },
+    testId: {
+        type: mongoose.Schema.Types.ObjectId,
         required: true,
     }
 })

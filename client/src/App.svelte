@@ -6,6 +6,7 @@
   import QuestionsForm from './components/questionsForm.svelte';
   import ResultInfo from './components/resultInfo.svelte';
   import ResultClientInfo from './components/resultClientInfo.svelte';
+  import Answers from './components/answers.svelte';
   import {onMount} from "svelte";
   import config from "./assets/config.js";
 
@@ -19,6 +20,7 @@
   let questionsForm = false;
   let resultInfo = false;
   let resultClientInfo = false;
+  let answers = false;
   let selectedTest = {}
 
 	onMount(async () => {
@@ -92,6 +94,14 @@
 				selectedTest.id = data.detail.data.id;
 			}
 		}
+
+		if (data.detail.state.answers !== undefined) {
+			answers = data.detail.state.answers;
+			if (answers){
+				selectedTest.id = data.detail.data.id;
+			}
+			// console.log(showBack);
+		}
     }
 </script>
 
@@ -119,6 +129,10 @@
 
 {#if resultInfo}
 	<ResultInfo on:updateState={updateState} id={selectedTest.id}/>
+{/if}
+
+{#if answers}
+	<Answers on:updateState={updateState} id={selectedTest.id}/>
 {/if}
 
 <style>

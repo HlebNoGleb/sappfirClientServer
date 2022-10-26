@@ -33,6 +33,9 @@ app.use('/questions', questionsRouter)
 const domainsRouter = require('./routes/domains')
 app.use('/domains', domainsRouter)
 
+const answersRouter = require('./routes/answers')
+app.use('/answers', answersRouter)
+
 const apiRouter = require('./routes/api')
 app.use('/api', apiRouter)
 app.listen(3001, () => console.log('Server Started'))
