@@ -30,8 +30,8 @@ app.use('/settings', settingsRouter)
 const questionsRouter = require('./routes/testQuestions')
 app.use('/questions', questionsRouter)
 
-const questionsRouter = require('./routes/default')
-app.use('/default', questionsRouter)
+const defaultRouter = require('./routes/default')
+app.use('/default', defaultRouter)
 
 const domainsRouter = require('./routes/domains')
 app.use('/domains', domainsRouter)
