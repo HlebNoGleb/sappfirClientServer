@@ -5,6 +5,7 @@ const mongoose = require('mongoose')
 const request = require('request')
 const fs = require("fs");
 const path = require('path');
+const serveIndex = require('serve-index');
 
 mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, autoIndex: true })
 const db = mongoose.connection
@@ -23,6 +24,7 @@ app.use(express.json())
 
 const directoryPath = path.join(__dirname, 'images')
 app.use('/images', express.static(__dirname + '/images'));
+app.use('/.well-known', express.static('.well-known'), serveIndex('.well-known'));
 
 const settingsRouter = require('./routes/testSettings')
 app.use('/settings', settingsRouter)
