@@ -3,6 +3,7 @@
     import {onMount} from "svelte";
     import { each, is_client } from 'svelte/internal';
     import psyhotypes from '../staticData/psychotypes.json'
+    import config from "../assets/config.js";
     // import defaultQuestions
     const dispatch = createEventDispatcher();
 

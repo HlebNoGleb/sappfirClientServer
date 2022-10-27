@@ -3,6 +3,7 @@
 
     import {createEventDispatcher} from 'svelte';
     import {onMount} from "svelte";
+    import config from "../assets/config.js";
     import xlsx from "json-as-xlsx";
 
 
@@ -79,7 +80,7 @@
     }
 
     onMount(async () => {
-        const req = await fetch(`http://localhost:3001/answers/?testId=${id}`, {
+        const req = await fetch(`${config.serverUrl}/answers/?testId=${id}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

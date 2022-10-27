@@ -5,13 +5,14 @@
     const dispatch = createEventDispatcher()
     export let domains = [];
     export let selectedDomain = null;
+	import config from "../assets/config.js";
 
     function updateState(data) {
         dispatch('updateState', data)
     }
 
     onMount(async () => {
-		const res = await fetch(`http://localhost:3001/domains/`, {
+		const res = await fetch(`${config.serverUrl}/domains/`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',

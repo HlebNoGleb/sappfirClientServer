@@ -1,5 +1,5 @@
 let config = {
-    domain: 'sappfir.com'
+    serverUrl: 'http://62.217.177.64:3001'
 }
 
 export default config;

@@ -24,7 +24,7 @@
   let selectedTest = {}
 
 	onMount(async () => {
-		const res = await fetch(`http://localhost:3001/domains/`, {
+		const res = await fetch(`${config.serverUrl}/domains/`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',

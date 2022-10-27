@@ -5,6 +5,7 @@
     import defaultQuestionsType2 from '../assets/defaultData/defaultQuestionsType2.json'
     import {onMount} from "svelte";
     import Select from 'svelte-select'
+    import config from "../assets/config.js";
     const dispatch = createEventDispatcher();
 
     export let questions;
@@ -49,7 +50,7 @@
 
 		console.log(data, update);
 
-        const res = await fetch(`http://localhost:3001/questions/`, {
+        const res = await fetch(`${config.serverUrl}/questions/`, {
             method: update ? 'PUT' : 'POST',
             headers: {
                 'Content-Type': 'application/json',

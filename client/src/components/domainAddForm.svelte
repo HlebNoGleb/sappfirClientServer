@@ -1,6 +1,7 @@
 <script>
     import Select from 'svelte-select';
     import {createEventDispatcher} from 'svelte';
+    import config from "../assets/config.js";
     const dispatch = createEventDispatcher()
 
     export let showBack;
@@ -15,7 +16,7 @@
 
 		// console.log(data);
 
-        const res = await fetch(`http://localhost:3001/domains/`, {
+        const res = await fetch(`${config.serverUrl}/domains/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -4,6 +4,7 @@
     import defaultSettings from '../assets/defaultData/defaultSettins.json'
     import testTypes from '../assets/defaultData/testTypes.json'
     import {onMount} from "svelte";
+    import config from "../assets/config.js";
     const dispatch = createEventDispatcher()
 
     export let selectedDomain;
@@ -21,7 +22,7 @@
     // }
 
     onMount(async () => {
-        const req = await fetch(`http://localhost:3001/settings/?domain=${selectedDomain._id}`, {
+        const req = await fetch(`${config.serverUrl}/settings/?domain=${selectedDomain._id}`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
@@ -72,7 +73,7 @@
 
 		console.log(data, update);
 
-        const res = await fetch(`http://localhost:3001/settings/`, {
+        const res = await fetch(`${config.serverUrl}/settings/`, {
             method: update ? 'PUT' : 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -129,7 +130,7 @@
     }
 
     async function deleteTest(id) {
-        const res = await fetch(`http://localhost:3001/settings?id=${id}`, {
+        const res = await fetch(`${config.serverUrl}/settings?id=${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

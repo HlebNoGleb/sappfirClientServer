@@ -4,6 +4,7 @@
     import testTypes from '../assets/defaultData/testTypes.json'
     import Select from 'svelte-select'
     import QuestionsEditForm from './questionsEditForm.svelte';
+    import config from "../assets/config.js";
     // import defaultQuestions
     const dispatch = createEventDispatcher();
 
@@ -15,7 +16,7 @@
     console.log(type);
 
     onMount(async () => {
-        const req = await fetch(`http://localhost:3001/questions/?test=${id}`, {
+        const req = await fetch(`${config.serverUrl}/questions/?test=${id}`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
