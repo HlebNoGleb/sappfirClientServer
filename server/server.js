@@ -43,4 +43,4 @@ app.use('/answers', answersRouter)
 
 const apiRouter = require('./routes/api')
 app.use('/api', apiRouter)
-app.listen(80, () => console.log('Server Started'))
+app.listen(443, () => console.log('Server Started'))
