@@ -6,6 +6,9 @@ const request = require('request')
 const fs = require("fs");
 const path = require('path');
 const serveIndex = require('serve-index');
+const cors = require('cors');
+const https = require('https');
+const http = require('http');
 
 mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, autoIndex: true })
 const db = mongoose.connection
@@ -21,6 +24,8 @@ app.use(function(req, res, next) {
 });
 
 app.use(express.json())
+
+app.use(cors());
 
 const directoryPath = path.join(__dirname, 'images')
 app.use('/images', express.static(__dirname + '/images'));
@@ -43,4 +48,17 @@ app.use('/answers', answersRouter)
 
 const apiRouter = require('./routes/api')
 app.use('/api', apiRouter)
-app.listen(80, () => console.log('Server Started'))
+// app.listen(80, () => console.log('Server Started'))
+const httpServer = http.createServer(app);
+const httpsServer = https.createServer({
+  key: fs.readFileSync('/etc/letsencrypt/live/server.sappfir.online/privkey.pem'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/server.sappfir.online/fullchain.pem'),
+}, app);
+
+httpServer.listen(80, () => {
+    console.log('HTTP Server running on port 80');
+});
+
+httpsServer.listen(443, () => {
+    console.log('HTTPS Server running on port 443');
+});
