@@ -17,6 +17,7 @@ router.use(function(req, res, next) {
 router.get('/', async (req, res) => {
 	let reqDomain = req.get('Referrer')
 	let findObj = {name:reqDomain};
+	console.log(findObj);
 	let domain = await Domain.findOne(findObj).exec()
 	if (domain){
 		let questions = await Questions.findOne({testId: req.query.key}).exec();

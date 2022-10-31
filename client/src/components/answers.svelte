@@ -19,6 +19,7 @@
 
     export let id;
     let showTable = false;
+    let showNoData = false;
     let data = [];
     let tableData = {};
     let tableColNames = {
@@ -89,8 +90,12 @@
 
         let json = await req.json();
         data = json;
-        tableData = getTableData(data);
-        showTable = true;
+        if (data && data.length > 0){
+          tableData = getTableData(data);
+          showTable = true;
+        } else {
+          showNoData = true;
+        }
     });
 
     function getTableData(data) {
@@ -178,6 +183,7 @@
 {#if showTable}
 <div class="col g-2">
   <button type="button" class="btn btn-outline-primary mb-3" on:click={downloadExcel}>Выгрузить в Excel</button>
+  <button type="button" class="btn btn-outline-primary" on:click={() => goBack()}>Назад</button>
   <select bind:value={selectedExportLocalization} on:change="{() => tableData = getTableData(data)}">
     {#each exportLocalizations as localization}
       <option value={localization.value}>
@@ -204,6 +210,14 @@
     </tbody>
   </table>
   <button type="button" class="btn btn-outline-primary" on:click={downloadExcel}>Выгрузить в Excel</button>
+  <button type="button" class="btn btn-outline-primary" on:click={() => goBack()}>Назад</button>
+</div>
+{/if}
+
+{#if showNoData}
+<div class="col col-auto">
+  <p>Нет данных</p>
+  <button type="button" class="btn btn-outline-primary" on:click={() => goBack()}>Назад</button>
 </div>
 {/if}
 

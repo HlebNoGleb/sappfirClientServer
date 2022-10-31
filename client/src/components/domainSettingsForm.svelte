@@ -61,6 +61,7 @@
             } else if (key.includes('userData')){
                 userData[key.slice(8)] = value;
             } else if (key.includes('resultSettings')){
+                console.log(key, value);
                 resultSettings[key.slice(14)] = value;
             } else {
                 data[key] = value;
@@ -90,7 +91,7 @@
 
     function editTestSettings(id){
         settings = settingsArray.find(x => x._id == id);
-        imagePreview = settings.image;
+        imagePreview = settings?.image;
         let settingsType = testTypes.filter(x=> x.id == settings.type)[0];
         testType = settingsType ? settingsType : testTypes[0];
         settingsArray = [];
@@ -117,6 +118,7 @@
     }
 
     function addNewTest(){
+        console.log("new")
         settingsArray = [];
         settings = defaultSettings;
         imagePreview = settings.image;
@@ -202,7 +204,7 @@
             <label class="form-check-label" for="userDataName">Имя</label>
           </div>
           <div class="form-check form-switch">
-            <input class="form-check-input" name="userDataFName" type="checkbox" role="switch" id="userDataFName">
+            <input class="form-check-input" name="userDataFName" type="checkbox" role="switch" id="userDataFName" checked>
             <label class="form-check-label" for="userDataFName">Фамилия</label>
           </div>
           <div class="form-check form-switch">
@@ -210,7 +212,7 @@
             <label class="form-check-label" for="userDataEmail">E-mail</label>
           </div>
           <div class="form-check form-switch">
-            <input class="form-check-input" name="userDataPhone" type="checkbox" role="switch" id="userDataPhone">
+            <input class="form-check-input" name="userDataPhone" type="checkbox" role="switch" id="userDataPhone" checked>
             <label class="form-check-label" for="userDataPhone">Телефон</label>
           </div>
           <div class="form-check form-switch">
@@ -246,7 +248,7 @@
         </div>
         <div class="mb-3">
             <label for="resultSettingsAfterText">Информация после прохождения теста</label>
-            <textarea class="form-control" id="resultSettingsAfterText" name="resultSettingsAfterText" rows="3" required>{settings.resultSettings.AfterText}</textarea>
+            <textarea class="form-control" id="resultSettingsAfterText" name="resultSettingsAfterText" rows="3">{settings.resultSettings.AfterText}</textarea>
             <div class="form-text">*Поддерживает HTML (встроен Bootstrap 5)</div>
         </div>
     </div>

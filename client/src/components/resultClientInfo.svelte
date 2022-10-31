@@ -64,7 +64,7 @@
 
         console.log(finalObj);
 
-        const res = await fetch(`http://localhost:3001/settings/`, {
+        const res = await fetch(`${config.serverUrl}/settings/`, {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json',
@@ -88,20 +88,20 @@
                 <div class="mb-4 border border-1 p-2 rounded">
                     <div class="mb-2">
                         <label for="title" class="form-label">Название</label>
-                        <input type="text" class="form-control" id="title" name="{psyhotype.name}-title-{index}" value="{psyhotype.title}-{index}">
+                        <input type="text" class="form-control" id="title" name="{psyhotype.name}-title-{index}" value="">
                     </div>
                     <div class="mb-2">
                         <label for="description" class="form-label">Описание</label>
-                        <input type="text" class="form-control" id="description" name="{psyhotype.name}-description-{index}" value="{psyhotype.title}-{index}-{index}">
+                        <input type="text" class="form-control" id="description" name="{psyhotype.name}-description-{index}" value="">
                     </div>
                     <div class="mb-2">
                         <label for="link" class="form-label">Ссылка</label>
-                        <input type="text" class="form-control" id="link" name="{psyhotype.name}-link-{index}" value="http://localhost:5173/">
+                        <input type="text" class="form-control" id="link" name="{psyhotype.name}-link-{index}" value="">
                     </div>
-                    <div class="mb-2">
+                    <!-- <div class="mb-2">
                         <label for="formFile" class="form-label">Изображение</label>
                         <input class="form-control" type="file" id="formFile">
-                    </div>
+                    </div> -->
                 </div>
                 {/each}
             </div>

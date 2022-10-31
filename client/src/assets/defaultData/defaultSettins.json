@@ -8,5 +8,8 @@
       "secondaryColor": "#0000ff",
       "tertiaryColor": "#008000"
     },
-    "type": 1
+    "type": 1,
+    "resultSettings":{
+      "AfterText": " "
+    }
 }

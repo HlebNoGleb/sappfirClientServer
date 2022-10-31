@@ -48,7 +48,13 @@ app.use('/answers', answersRouter)
 
 const apiRouter = require('./routes/api')
 app.use('/api', apiRouter)
-// app.listen(80, () => console.log('Server Started'))
+
+
+
+// app.listen(81, () => console.log('Server Started'))
+
+
+
 const httpServer = http.createServer(app);
 const httpsServer = https.createServer({
   key: fs.readFileSync('/etc/letsencrypt/live/server.sappfir.online/privkey.pem'),
