@@ -57,15 +57,17 @@ router.post('/', async (req, res) => {
 
 		let leadPsychotypesClientInfo = [];
 
-		Object.keys(settings.resultClientData).forEach(element => {
-			console.log(element);
-			if (leadPsychotypes.includes(element)){
-				// let obj = {};
-				// obj[element] = settings.resultClientData[element];
-				// leadPsychotypesClientInfo.push(obj);
-				leadPsychotypesClientInfo.push(settings.resultClientData[element]);
-			}
-		});
+		if (settings && settings.resultClientData) {
+			Object.keys(settings.resultClientData).forEach(element => {
+				console.log(element);
+				if (leadPsychotypes.includes(element)){
+					// let obj = {};
+					// obj[element] = settings.resultClientData[element];
+					// leadPsychotypesClientInfo.push(obj);
+					leadPsychotypesClientInfo.push(settings.resultClientData[element]);
+				}
+			});
+		}
 
 		console.log(leadPsychotypesClientInfo);
 
