@@ -9,9 +9,8 @@
 </head>
 
 <body>
-    <h1>Test website</h1>
     <div id="widget"></div>
-    <script>
+    <!-- <script>
         (function () {
             var h = document.getElementsByTagName("head")[0];
             var s = document.createElement("script");
@@ -20,6 +19,22 @@
             s.src = "http://localhost:81/public/widget.js";
             h.appendChild(s);
         })();
+    </script> -->
+    <div id="mywidget"></div>
+    <!-- <script src='mywidget.js'></script> -->
+    <link rel="stylesheet" href="vendor.css">
+    <script>
+         var chat24 = document.createElement("script");
+        chat24.type = "text/javascript";
+        chat24.async = true;
+        chat24.src = "mywidget.js";
+        document.body.appendChild(chat24);
+        new MyWidget({
+            target: document.getElementById("mywidget"),
+            props: {
+                name: 'world'
+            }
+        });
     </script>
 </body>
 
