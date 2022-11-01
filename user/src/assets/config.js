@@ -1,6 +1,7 @@
 let settings = {
-    serverUrl: "https://server.sappfir.online",
-    testId: "634c67fbc2c61d0e50d691c3",
+    // serverUrl: "https://server.sappfir.online",
+    serverUrl:"http://localhost:81",
+    testId: "636148bd439f20b7418b49a7",
 }
 
 export default settings

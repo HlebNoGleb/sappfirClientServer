@@ -31,7 +31,6 @@ router.get('/', async (req, res) => {
 			res.send({});
 		}
 	} else {
-		console.log(3333);
 		res.send({});
 	}
 })

@@ -27,9 +27,17 @@
         ru: "Имя",
         en: "Name"
       },
+      FName: {
+        ru: "Фамилия",
+        en: "Fname"
+      },
       Email: {
         ru: "Почта",
         en: "Email"
+      },
+      Phone: {
+        ru: "Телефон",
+        en: "Phone"
       },
       Age: {
         ru: "Возрастная группа",
@@ -117,6 +125,7 @@
       Object.keys(data[0]).forEach(row => {
         if(typeof data[0][row] === 'object' && data[0][row] !== null && !Array.isArray(data[0][row])){
           Object.keys(data[0][row]).forEach(element => {
+            console.log(element);
             let obj = {
               label: tableColNames[element][selectedExportLocalization],
               value: element,

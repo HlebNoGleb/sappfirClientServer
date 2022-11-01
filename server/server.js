@@ -29,6 +29,7 @@ app.use(cors());
 
 const directoryPath = path.join(__dirname, 'images')
 app.use('/images', express.static(__dirname + '/images'));
+app.use('/public', express.static(__dirname + '/public'));
 app.use('/.well-known', express.static('.well-known'), serveIndex('.well-known'));
 
 const settingsRouter = require('./routes/testSettings')
@@ -50,21 +51,20 @@ const apiRouter = require('./routes/api')
 app.use('/api', apiRouter)
 
 
-
-// app.listen(81, () => console.log('Server Started'))
-
+app.listen(81, () => console.log('Server Started'))
 
 
-const httpServer = http.createServer(app);
-const httpsServer = https.createServer({
-  key: fs.readFileSync('/etc/letsencrypt/live/server.sappfir.online/privkey.pem'),
-  cert: fs.readFileSync('/etc/letsencrypt/live/server.sappfir.online/fullchain.pem'),
-}, app);
 
-httpServer.listen(80, () => {
-    console.log('HTTP Server running on port 80');
-});
+// const httpServer = http.createServer(app);
+// const httpsServer = https.createServer({
+//   key: fs.readFileSync('/etc/letsencrypt/live/server.sappfir.online/privkey.pem'),
+//   cert: fs.readFileSync('/etc/letsencrypt/live/server.sappfir.online/fullchain.pem'),
+// }, app);
 
-httpsServer.listen(443, () => {
-    console.log('HTTPS Server running on port 443');
-});
+// httpServer.listen(80, () => {
+//     console.log('HTTP Server running on port 80');
+// });
+
+// httpsServer.listen(443, () => {
+//     console.log('HTTPS Server running on port 443');
+// });
