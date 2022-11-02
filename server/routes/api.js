@@ -17,6 +17,7 @@ router.use(function(req, res, next) {
 router.get('/', async (req, res) => {
 	// console.log(req.headers.test)
 	let reqDomain = req.headers["request-url"];
+	console.log(reqDomain);
 	let findObj = {name:reqDomain};
 	// console.log(findObj);
 	let domain = await Domain.findOne(findObj).exec()
