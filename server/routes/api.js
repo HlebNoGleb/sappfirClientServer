@@ -15,9 +15,10 @@ router.use(function(req, res, next) {
 });
 
 router.get('/', async (req, res) => {
-	let reqDomain = req.get('Referrer')
+	// console.log(req.headers.test)
+	let reqDomain = req.headers["request-url"];
 	let findObj = {name:reqDomain};
-	console.log(findObj);
+	// console.log(findObj);
 	let domain = await Domain.findOne(findObj).exec()
 	if (domain){
 		let questions = await Questions.findOne({testId: req.query.key}).exec();
@@ -25,7 +26,7 @@ router.get('/', async (req, res) => {
 
 		if (settings && questions){
 			let resObj = {settings: settings, questions: questions}
-			console.log(resObj)
+			// console.log(resObj)
 			res.send(resObj);
 		} else {
 			res.send({});

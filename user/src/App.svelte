@@ -25,10 +25,14 @@
     let clientInfo = {};
 
     onMount(async () => {
+      let url = (window.location != window.parent.location)
+        ? document.referrer
+        : document.location.href;
       const req = await fetch(`${config.serverUrl}/api/?key=${config.testId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          'Request-Url':`${url}`,
         },
       });
 
@@ -72,7 +76,7 @@
 
         let dataObj = {
             testId:config.testId,
-            selected:fortest, //selected
+            selected: fortest,//selected,
             data:userData,
         }
 
@@ -119,7 +123,9 @@
         chartData = [];
         psychotypesData = [];
         clientInfo = [];
+        window.scrollTo(0, 0);
         await new Promise(resolve => setTimeout(resolve, 1000));
+        showQuestions = false;
         showResult = true;
         loading = false;
         chartData = result.sum;
