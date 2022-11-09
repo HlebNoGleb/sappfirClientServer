@@ -15,6 +15,7 @@
 
     let userData = null;
     let color = null;
+    let verticalMode = false;
 
     let agesGroupArray = ["18-24", "25-35", "36-45", "46-55", "55+"];
     let sexArray = ["Мужской", "Женский"];
@@ -46,6 +47,8 @@
             showNoQuestions = false;
             showUserForm = true;
             color = settings.image;
+            console.log(settings.resultSettings.VerticalMode);
+            verticalMode = settings.resultSettings.VerticalMode ? true : false;
             loading = false;
       } else {
             showQuestions = false;
@@ -59,13 +62,11 @@
     let selected = [];
 
     async function saveData(e){
-        // if (Object.keys(selected).length < questions.questions.length){
-        //     alert("no")
-        //     return;
-        // } else {
-        //     alert("yes")
-        //     console.log(selected)
-        // }
+        if (Object.keys(selected).length < questions.questions.length){
+            alert("Вы ответили не на все вопросы")
+            return;
+        }
+
         loading = true;
 
         let fortest = [];
@@ -76,7 +77,7 @@
 
         let dataObj = {
             testId:config.testId,
-            selected: fortest,//selected,
+            selected: selected,
             data:userData,
         }
 
@@ -133,8 +134,6 @@
         clientInfo = result.clientInfo;
     }
 
-    let test = true;
-
 </script>
 <Loader loading={loading}></Loader>
 <div class="wrapper">
@@ -143,10 +142,10 @@
         {#if showQuestions}
             <div class="container" style="background-color:{settings.color.mainColor}">
                 <form on:submit|preventDefault={saveData}>
-                <div class="row row-cols-1 row-cols-md-1 g-2" class:row-cols-md-2={test}>
+                <div class="row row-cols-1 row-cols-md-1 g-2" class:row-cols-md-2={verticalMode}>
                     {#each questions.questions as question, i }
                         <div class="col my-2" >
-                            {#if test}
+                            {#if verticalMode}
                                 <div class="card">
                                     <img src="https://picsum.photos/200" class="card-img-top" alt="">
                                     <div class="card-body">

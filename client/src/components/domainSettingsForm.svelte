@@ -231,6 +231,10 @@
     <div class="mb-3">
         <label for="">Вывод результата</label>
         <div class="form-check form-switch">
+            <input class="form-check-input" name="resultSettingsVerticalMode" type="checkbox" role="switch" id="resultSettingsVerticalMode" checked>
+            <label class="form-check-label" for="resultSettingsVerticalMode">Вертикаьный вид вопросов</label>
+        </div>
+        <div class="form-check form-switch">
             <input class="form-check-input" name="resultSettingsChart" type="checkbox" role="switch" id="resultSettingsChart" checked>
             <label class="form-check-label" for="resultSettingsChart">График</label>
         </div>

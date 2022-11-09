@@ -40,64 +40,67 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
 	console.log(req.body);
 	let answers = req.body.selected;
-
-	if (answers.length == 40 || answers.length == 80 || answers.length == 120 || answers.length == 160){
-		let userData = req.body.data;
-		let testId = req.body.testId;
-		let sum = math(answers);
-		let max = getLeads(sum);
-		let psychotypesData = psychotypes.filter((item) => {
-			return max.includes(item.id);
-		});
-
-		let leadPsychotypes = psychotypesData.map(x=> x.name);
-
-		const id = {_id: testId};
-
-		let settings = await Settings.findById(id).exec();
-
-		let leadPsychotypesClientInfo = [];
-
-		if (settings && settings.resultClientData) {
-			Object.keys(settings.resultClientData).forEach(element => {
-				console.log(element);
-				if (leadPsychotypes.includes(element)){
-					// let obj = {};
-					// obj[element] = settings.resultClientData[element];
-					// leadPsychotypesClientInfo.push(obj);
-					leadPsychotypesClientInfo.push(settings.resultClientData[element]);
-				}
+	try {
+		if (answers.length == 40 || answers.length == 80 || answers.length == 120 || answers.length == 160){
+			let userData = req.body.data;
+			let testId = req.body.testId;
+			let sum = math(answers);
+			let max = getLeads(sum);
+			let psychotypesData = psychotypes.filter((item) => {
+				return max.includes(item.id);
 			});
+
+			let leadPsychotypes = psychotypesData.map(x=> x.name);
+
+			const id = {_id: testId};
+
+			let settings = await Settings.findById(id).exec();
+
+			let leadPsychotypesClientInfo = [];
+
+			if (settings && settings.resultClientData) {
+				Object.keys(settings.resultClientData).forEach(element => {
+					console.log(element);
+					if (leadPsychotypes.includes(element)){
+						// let obj = {};
+						// obj[element] = settings.resultClientData[element];
+						// leadPsychotypesClientInfo.push(obj);
+						leadPsychotypesClientInfo.push(settings.resultClientData[element]);
+					}
+				});
+			}
+
+			console.log(leadPsychotypesClientInfo);
+
+			let result = {
+				sum: sum,
+				max: max,
+				psychotypesData: psychotypesData,
+				clientInfo: leadPsychotypesClientInfo,
+			}
+
+			let saveData = {
+				userData: userData,
+				answers: answers,
+				sum: sum,
+				max: max,
+				leadPsychotypes: leadPsychotypes,
+				testId: id,
+			}
+
+			const answer = new Answer(saveData);
+			console.log(answer);
+			try {
+				const saveResult = await answer.save()
+			} catch (err) {
+
+			}
+
+			res.send(result);
+			return null;
 		}
-
-		console.log(leadPsychotypesClientInfo);
-
-		let result = {
-			sum: sum,
-			max: max,
-			psychotypesData: psychotypesData,
-			clientInfo: leadPsychotypesClientInfo,
-		}
-
-		let saveData = {
-			userData: userData,
-			answers: answers,
-			sum: sum,
-			max: max,
-			leadPsychotypes: leadPsychotypes,
-			testId: id,
-		}
-
-		const answer = new Answer(saveData);
-		console.log(answer);
-		try {
-			const saveResult = await answer.save()
-		} catch (err) {
-
-		}
-
-		res.send(result);
-		return null;
+	} catch (err) {
+		console.log(err);
 	}
 
 	let error = {error:"Ошибка"}
