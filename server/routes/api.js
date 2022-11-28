@@ -62,9 +62,6 @@ router.post('/', async (req, res) => {
 				Object.keys(settings.resultClientData).forEach(element => {
 					console.log(element);
 					if (leadPsychotypes.includes(element)){
-						// let obj = {};
-						// obj[element] = settings.resultClientData[element];
-						// leadPsychotypesClientInfo.push(obj);
 						leadPsychotypesClientInfo.push(settings.resultClientData[element]);
 					}
 				});
@@ -93,7 +90,7 @@ router.post('/', async (req, res) => {
 			try {
 				const saveResult = await answer.save()
 			} catch (err) {
-
+				console.log(err);
 			}
 
 			res.send(result);
@@ -130,10 +127,6 @@ function math(answers){
 
 	console.log(stageSum);
 	return stageSum;
-
-	// 10,  35,  60,  85, 110, 135, 160, 185,
-	// 210, 235, 260, 285, 310, 335, 360, 385,
-	// 410, 435, 460, 485, 510, 535, 560, 585
 }
 
 function getLeads(sum){
