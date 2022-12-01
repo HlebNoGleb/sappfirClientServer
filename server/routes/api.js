@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
 	let domain = await Domain.findOne(findObj).exec()
 	if (domain){
 		let questions = await Questions.findOne({testId: req.query.key}).exec();
-		let settings = await Settings.findOne({domainId: domain._id}).exec();
+		let settings = await Settings.findOne({_id: req.query.key}).exec();
 		if (settings && questions){
 			let resObj = {settings: settings, questions: questions}
 			res.send(resObj);
