@@ -26,36 +26,52 @@
     let clientInfo = {};
 
     onMount(async () => {
-      let url = (window.location != window.parent.location)
-        ? document.referrer
-        : document.location.href;
-      const req = await fetch(`${config.serverUrl}/api/?key=${config.testId}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Request-Url':`${url}`,
-        },
-      });
+        let url = (window.location != window.parent.location)
+            ? document.referrer
+            : null;
 
-      let data = await req.json();
-      console.log(data);
+        if (!url){
+            return null;
+        }
 
-      if (data && Object.keys(data).length > 0){
-            questions = data.questions;
-            settings = data.settings;
-            showQuestions = false;
-            showNoQuestions = false;
-            showUserForm = true;
-            color = settings.image;
-            console.log(settings.resultSettings.VerticalMode);
-            verticalMode = settings.resultSettings.VerticalMode ? true : false;
-            loading = false;
-      } else {
-            showQuestions = false;
-            showUserForm = false;
-            showNoQuestions = true;
-            loading = false;
-      }
+        const urlSearchParams = new URLSearchParams(window.location.search);
+        const params = Object.fromEntries(urlSearchParams.entries());
+
+        const key = params.key;
+
+        console.log(key);
+
+        if (!key){
+            return null;
+        }
+
+        const req = await fetch(`${config.serverUrl}/api/?key=${key}`, {
+            method: 'GET',
+            headers: {
+            'Content-Type': 'application/json',
+            'Request-Url':`${url}`,
+            },
+        });
+
+        let data = await req.json();
+        console.log(data);
+
+        if (data && Object.keys(data).length > 0){
+                questions = data.questions;
+                settings = data.settings;
+                showQuestions = false;
+                showNoQuestions = false;
+                showUserForm = true;
+                color = settings.image;
+                console.log(settings.resultSettings.VerticalMode);
+                verticalMode = settings.resultSettings.VerticalMode ? true : false;
+                loading = false;
+        } else {
+                showQuestions = false;
+                showUserForm = false;
+                showNoQuestions = true;
+                loading = false;
+        }
 
     });
 
