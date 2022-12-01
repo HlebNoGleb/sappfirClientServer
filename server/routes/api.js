@@ -14,7 +14,10 @@ router.use(function(req, res, next) {
 	next();
 });
 
+// делать запрос сразу на сервер, потом проверять url-ref и key, потом возвращать get Запрос на клиент
+
 router.get('/', async (req, res) => {
+	console.log(req.headers);
 	let reqDomain = req.headers["request-url"];
 	let findObj = {name:reqDomain};
 	// console.log(findObj);

@@ -24,6 +24,7 @@
     let chartData = {};
     let psychotypesData = {};
     let clientInfo = {};
+    let key = null;
 
     onMount(async () => {
         let url = (window.location != window.parent.location)
@@ -31,25 +32,27 @@
             : null;
 
         if (!url){
+            showNoData();
             return null;
         }
 
         const urlSearchParams = new URLSearchParams(window.location.search);
         const params = Object.fromEntries(urlSearchParams.entries());
 
-        const key = params.key;
+        key = params.key;
 
         console.log(key);
 
         if (!key){
+            showNoData();
             return null;
         }
 
         const req = await fetch(`${config.serverUrl}/api/?key=${key}`, {
             method: 'GET',
             headers: {
-            'Content-Type': 'application/json',
-            'Request-Url':`${url}`,
+                'Content-Type': 'application/json',
+                'Request-Url':`${url}`,
             },
         });
 
@@ -67,21 +70,25 @@
                 verticalMode = settings.resultSettings.VerticalMode ? true : false;
                 loading = false;
         } else {
-                showQuestions = false;
-                showUserForm = false;
-                showNoQuestions = true;
-                loading = false;
+            showNoData();
         }
 
     });
 
+    function showNoData(){
+        showQuestions = false;
+        showUserForm = false;
+        showNoQuestions = true;
+        loading = false;
+    }
+
     let selected = [];
 
     async function saveData(e){
-        if (Object.keys(selected).length < questions.questions.length){
-            alert("Вы ответили не на все вопросы")
-            return;
-        }
+        // if (Object.keys(selected).length < questions.questions.length){
+        //     alert("Вы ответили не на все вопросы")
+        //     return;
+        // }
 
         loading = true;
 
@@ -92,8 +99,8 @@
         }
 
         let dataObj = {
-            testId:config.testId,
-            selected: selected,
+            testId:key,
+            selected: fortest,
             data:userData,
         }
 
