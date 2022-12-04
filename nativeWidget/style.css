@@ -6,9 +6,9 @@
 }
 
 body{
-    background: #673AB7;
-    background: -webkit-linear-gradient(to right, #512DA8, #673AB7);
-    background: linear-gradient(to right, #512DA8, #673AB7);
+    background: rgb(72, 58, 203);
+    background: -webkit-linear-gradient(to right, rgb(72, 58, 203), rgb(163, 30, 160));
+    background: linear-gradient(to right, rgb(72, 58, 203), rgb(163, 30, 160));
     height: 100vh;
     display: flex;
     flex-direction: column;

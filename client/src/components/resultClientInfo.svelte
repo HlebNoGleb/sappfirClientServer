@@ -65,7 +65,7 @@
         console.log(finalObj);
 
         const res = await fetch(`${config.serverUrl}/settings/`, {
-            method: "PUT",
+            method: update ? 'PUT' : 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -79,7 +79,7 @@
 
 </script>
 
-<div>
+<div class="container">
     <form on:submit|preventDefault={saveResultClientInfo}>
         {#each psyhotypes as psyhotype}
             <div class="mb-5">
@@ -92,7 +92,7 @@
                     </div>
                     <div class="mb-2">
                         <label for="description" class="form-label">Описание</label>
-                        <input type="text" class="form-control" id="description" name="{psyhotype.name}-description-{index}" value="">
+                        <textarea class="form-control" id="description" name="{psyhotype.name}-description-{index}" rows="3"></textarea>
                     </div>
                     <div class="mb-2">
                         <label for="link" class="form-label">Ссылка</label>
@@ -110,3 +110,9 @@
 	    <button type="submit" class="btn btn-primary">Сохранить</button>
     </form>
 </div>
+
+<style>
+    .container{
+		width: min(30rem, 90%);
+	}
+</style>

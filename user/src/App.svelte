@@ -14,7 +14,6 @@
     let showResult = false;
 
     let userData = null;
-    let color = null;
     let verticalMode = false;
 
     let agesGroupArray = ["18-24", "25-35", "36-45", "46-55", "55+"];
@@ -65,15 +64,20 @@
                 showQuestions = false;
                 showNoQuestions = false;
                 showUserForm = true;
-                color = settings.image;
-                console.log(settings.resultSettings.VerticalMode);
                 verticalMode = settings.resultSettings.VerticalMode ? true : false;
+                setColors(settings.color);
                 loading = false;
         } else {
             showNoData();
         }
 
     });
+
+    function setColors(colors){
+        document.documentElement.style.setProperty('--text-color', colors.mainColor);
+        document.documentElement.style.setProperty('--background-color', colors.secondaryColor);
+        document.documentElement.style.setProperty('--wrapper-color', colors.tertiaryColor);
+    }
 
     function showNoData(){
         showQuestions = false;
@@ -85,10 +89,10 @@
     let selected = [];
 
     async function saveData(e){
-        // if (Object.keys(selected).length < questions.questions.length){
-        //     alert("Вы ответили не на все вопросы")
-        //     return;
-        // }
+        if (Object.keys(selected).length < questions.questions.length){
+            alert("Вы ответили не на все вопросы")
+            return;
+        }
 
         loading = true;
 
@@ -100,7 +104,7 @@
 
         let dataObj = {
             testId:key,
-            selected: fortest,
+            selected: selected,
             data:userData,
         }
 
@@ -158,12 +162,14 @@
     }
 
 </script>
+
 <Loader loading={loading}></Loader>
+
 <div class="wrapper">
     {#if showQuestions || showUserForm}
         <div class="test-background" style="background-image: url('{settings.image}')"></div>
         {#if showQuestions}
-            <div class="container" style="background-color:{settings.color.mainColor}">
+            <div class="container">
                 <form on:submit|preventDefault={saveData}>
                 <div class="row row-cols-1 row-cols-md-1 g-2" class:row-cols-md-2={verticalMode}>
                     {#each questions.questions as question, i }
@@ -214,7 +220,7 @@
             </div>
         {/if}
         {#if showUserForm}
-            <div class="container" style="background-color:{settings.color.mainColor}">
+            <div class="container">
                 <form on:submit|preventDefault={saveUserForm}>
                     {#if settings.userData.Name}
                         <div class="mb-3">
@@ -304,7 +310,7 @@
         background-position: center;
         top: 0;
         width: 100%;
-        z-index: -1;
+        z-index: 1;
         transition: .5s all ease;
     }
 </style>

@@ -17,7 +17,6 @@ router.use(function(req, res, next) {
 // делать запрос сразу на сервер, потом проверять url-ref и key, потом возвращать get Запрос на клиент
 
 router.get('/', async (req, res) => {
-	console.log(req.headers);
 	let reqDomain = req.headers["request-url"];
 	let findObj = {name:reqDomain};
 	// console.log(findObj);
@@ -103,13 +102,13 @@ router.post('/', async (req, res) => {
 	res.send(error);
 })
 
-router.put('/', async (req, res) => {
-	res.send('Got a PUT request')
-})
+// router.put('/', async (req, res) => {
+// 	res.send('Got a PUT request')
+// })
 
-router.delete('/user', (req, res) => {
-  res.send('Got a DELETE request')
-})
+// router.delete('/user', (req, res) => {
+//   res.send('Got a DELETE request')
+// })
 
 function math(answers){
 

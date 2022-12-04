@@ -41,20 +41,22 @@
     }
 </script>
 
-<form on:submit|preventDefault={domainAdd}>
-    <div class="mb-3">
-        <label for="name">Домен</label>
-        <input type="text" class="form-control" id="name" name="name" value="" required/>
-    </div>
-    <div class="mb-3">
-        <label for="name">Описание домена</label>
-        <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
-    </div>
-    {#if showBack}
-        <button type="button" class="btn btn-outline-primary" on:click={() => updateState({state:{domainSelect: true, domainAdd: false, loading: true}})}>Назад</button>
-    {/if}
-    <button type="submit" class="btn btn-primary">Сохранить</button>
-</form>
+<div class="container">
+    <form on:submit|preventDefault={domainAdd}>
+        <div class="mb-3">
+            <label for="name">Домен</label>
+            <input type="text" class="form-control" id="name" name="name" value="" required/>
+        </div>
+        <div class="mb-3">
+            <label for="name">Описание домена</label>
+            <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+        </div>
+        {#if showBack}
+            <button type="button" class="btn btn-outline-primary" on:click={() => updateState({state:{domainSelect: true, domainAdd: false, loading: true}})}>Назад</button>
+        {/if}
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+    </form>
+</div>
 
 <style>
 

@@ -16,7 +16,7 @@
 {/if}
 
 <style>
-    .loader{
+.loader{
 	position: fixed;
 	top: 0;
 	left: 0;

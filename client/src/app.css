@@ -4,9 +4,9 @@
     align-items: center;
     min-height: 100vh;
     padding: 20px;
-    width: 30rem;
+    width: 35rem;
 }
 
 form{
-    width: 30rem;
+    width: 100%;
 }

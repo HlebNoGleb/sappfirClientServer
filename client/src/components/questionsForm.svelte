@@ -28,20 +28,16 @@
         if (data && data.length > 0){
             update = true
             if (data.length > 1){
-                console.log(1);
-                // console.log(data);
+                console.log(data);
                 questionsArray = data;
                 questions = [];
             } else {
-                console.log(2);
                 console.log(data);
                 questions = data[0];
                 type = data[0].type;
                 questionsArray = [];
             }
-
         } else {
-            console.log(3);
             questions = {}
             questionsArray = [];
             type = testTypes[0].id;

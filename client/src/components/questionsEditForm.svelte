@@ -48,8 +48,6 @@
             data.type = selectedType.id;
 		});
 
-		console.log(data, update);
-
         const res = await fetch(`${config.serverUrl}/questions/`, {
             method: update ? 'PUT' : 'POST',
             headers: {
@@ -97,44 +95,50 @@
     }
 </script>
 
-<form on:submit|preventDefault={saveQuestionsData}>
-	<div class="mb-3">
-		<h1>questions - {id}</h1>
-        {#if update}
-        <p>Тип теста - {selectedType.name}</p>
-        {:else}
-        <Select items={testTypes} on:change={getDefaultQuestionByType} bind:value={selectedType} id={'type'} inputAttributes={{name: 'type'}} placeholder={'Выберите тип теста'} itemId={'id'} label={'name'}></Select>
+<div class="container">
+    <form on:submit|preventDefault={saveQuestionsData}>
+        <div class="mb-3">
+            {#if update}
+                <p>Вопросы для теста с типом: {selectedType.name}</p>
+            {:else}
+                <Select items={testTypes} on:change={getDefaultQuestionByType} bind:value={selectedType} id={'type'} inputAttributes={{name: 'type'}} placeholder={'Выберите тип теста'} itemId={'id'} label={'name'}></Select>
+            {/if}
+        </div>
+        {#if showQuestions}
+            {#each questions.questions as item}
+                <div class="col my-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <div>
+                                <label for="question_{item.id}" class="form-label">Вопрос #{item.id}</label>
+                                <input type="text" class="form-control" value="{item.value}" name="question_{item.id}" id="question_{item.id}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {/each}
+            <p>Ответы на вопросы</p>
+            {#each questions.answers as item}
+                <div class="col my-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <div>
+                                <label for="answer_{item.id}" class="form-label">Ответ #{item.id}</label>
+                                <input type="text" class="form-control" value="{item.value}" name="answer_{item.id}" id="answer_{item.id}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {/each}
         {/if}
-	</div>
-    {#if showQuestions}
-        <p>Вопросы</p>
-        {#each questions.questions as item}
-            <div class="col my-2">
-                <div class="card">
-                    <div class="card-body">
-                        <div>
-                            <label for="question_{item.id}" class="form-label">Вопрос #{item.id}</label>
-                            <input type="text" class="form-control" value="{item.value}" name="question_{item.id}" id="question_{item.id}">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        {/each}
-        <p>Ответы на вопросы</p>
-        {#each questions.answers as item}
-            <div class="col my-2">
-                <div class="card">
-                    <div class="card-body">
-                        <div>
-                            <label for="answer_{item.id}" class="form-label">Ответ #{item.id}</label>
-                            <input type="text" class="form-control" value="{item.value}" name="answer_{item.id}" id="answer_{item.id}">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        {/each}
-    {/if}
-    <div class="mb-3"></div>
-    <button type="button" class="btn btn-outline-primary" on:click={() => goBack()}>Назад</button>
-	<button type="submit" class="btn btn-primary">Сохранить</button>
-</form>
+        <div class="mb-3"></div>
+        <button type="button" class="btn btn-outline-primary" on:click={() => goBack()}>Назад</button>
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+    </form>
+</div>
+
+<style>
+    .container{
+		width: min(35rem, 90%);
+	}
+</style>

@@ -10,20 +10,20 @@ router.use(function(req, res, next) {
 });
 
 router.get('/', (req, res) => {
-  	res.send('hello world')
+  	res.send('server is running')
 })
 
-router.post('/', (req, res) => {
-  	res.send('Got a POST request')
-})
+// router.post('/', (req, res) => {
+//   	res.send('Got a POST request')
+// })
 
-router.put('/user', (req, res) => {
-  res.send('Got a PUT request at /user')
-})
+// router.put('/user', (req, res) => {
+//   res.send('Got a PUT request at /user')
+// })
 
-router.delete('/user', (req, res) => {
-  res.send('Got a DELETE request at /user')
-})
+// router.delete('/user', (req, res) => {
+//   res.send('Got a DELETE request at /user')
+// })
 
 
 module.exports = router

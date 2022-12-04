@@ -48,9 +48,9 @@ router.put('/', async (req, res) => {
 	}
 })
 
-router.delete('/user', (req, res) => {
-  res.send('Got a DELETE request at /user')
-})
+// router.delete('/user', (req, res) => {
+//   res.send('Got a DELETE request at /user')
+// })
 
 
 module.exports = router
