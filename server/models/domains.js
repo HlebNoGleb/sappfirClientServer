@@ -9,6 +9,6 @@ const domainsScheme = new mongoose.Schema({
         type: String,
         required: true,
     }
-})
+});
 
-module.exports = mongoose.model('Domain', domainsScheme)
+module.exports = mongoose.model('domains', domainsScheme)

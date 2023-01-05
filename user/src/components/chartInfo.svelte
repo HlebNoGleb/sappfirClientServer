@@ -4,9 +4,7 @@
 
 {#each psychotypesData as psychotype}
     <p>{psychotype.title}</p>
-    <p>{psychotype.thinkingType}</p>
-    <p>{psychotype.learningWays}</p>
-    <p>{psychotype.characterFeatures}</p>
-    <p>{psychotype.stressReactions}</p>
-    <p>{psychotype.recommendations}</p>
+    <div>
+        {@html psychotype.data}
+    </div>
 {/each}

@@ -11,11 +11,11 @@ router.use(function(req, res, next) {
 });
 
 router.get('/', (req, res) => {
-    Answer.find({testId: req.query.testId}, (err, answers) => {
+    Answer.find({questionsId: req.query.id}, (err, answers) => {
 		if (err) {
 			console.log(err);
 		} else {
-			console.log(answers);
+			// console.log(answers);
 			if (answers) {
 				res.send(answers);
 			} else {

@@ -1,5 +1,9 @@
 const mongoose = require('mongoose')
 const answersScheme = new mongoose.Schema({
+    questionsId: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+    },
     userData: {
         type: Object,
         required: true,
@@ -10,20 +14,16 @@ const answersScheme = new mongoose.Schema({
     },
     sum: {
         type: Array,
-        required: true,
+        // required: true,
     },
     max: {
         type: Array,
-        required: true,
+        // required: true,
     },
-    leadPsychotypes: {
+    leadPsychotypes:{
         type: Array,
-        required: true,
+        // required: true
     },
-    testId: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-    }
 })
 
-module.exports = mongoose.model('Answer', answersScheme)
+module.exports = mongoose.model('answers', answersScheme)

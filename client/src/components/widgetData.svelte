@@ -11,7 +11,7 @@
     }
 
     function goBack(){
-        updateState({state:{widgetData: false, domainSettings: true}});
+        updateState({state:{widgetData: false, tests: true}});
     }
 
 </script>

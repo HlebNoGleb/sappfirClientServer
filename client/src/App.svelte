@@ -1,29 +1,38 @@
 <script>
-  import Loader from './components/loader.svelte';
-  import DomainSelectForm from './components/domainSelectForm.svelte';
-  import DomainSettingsForm from './components/domainSettingsForm.svelte';
-  import DomainAddForm from './components/domainAddForm.svelte';
-  import QuestionsForm from './components/questionsForm.svelte';
-  import ResultInfo from './components/resultInfo.svelte';
-  import ResultClientInfo from './components/resultClientInfo.svelte';
+  import Loader from './components/common/loader.svelte';
+  import DomainSelectForm from './components/tests/domainSelectForm.svelte';
+  import SettingsForm from './components/tests/settingsForm.svelte';
+  import DomainAddForm from './components/tests/domainAddForm.svelte';
+  import Questions from './components/questions/questions.svelte';
+  import QuestionsForm from './components/questions/questionsForm.svelte';
+  import PsyhotypesChartText from './components/psyhotypesChartText.svelte';
+  import PsyhotypesClientData from './components/psyhotypesClientData.svelte';
+  import SimpleClientData from './components/simpleClientData.svelte';
   import WidgetData from './components/widgetData.svelte';
-  import Answers from './components/answers.svelte';
+  import Answers from './components/answers/answers.svelte';
   import {onMount} from "svelte";
   import config from "./assets/config.js";
+  import Tests from './components/tests/tests.svelte';
+
 
   let domains = [];
   let loading = true;
   let selectedDomain = null;
   let domainSelect = false;
   let domainAdd = false;
-  let domainSettings = false;
+  let tests = false;
+  let testSettings = false;
   let showBack = false;
+  let questions = false;
   let questionsForm = false;
-  let resultInfo = false;
-  let resultClientInfo = false;
+  let psyhotypesChartText = false;
+  let psyhotypesClientData = false;
+  let simpleClientInfo = false;
   let answers = false;
   let widgetData = false;
-  let selectedTest = {}
+  let selectedTest = {};
+
+  let componentData = {}; // объект передаваемых данных на все компоненты через изменение состояния
 
 	onMount(async () => {
 		const res = await fetch(`${config.serverUrl}/domains/`, {
@@ -47,63 +56,94 @@
 		}, 100);
 	});
 
-	function updateState(data) {
-		console.log(data);
-		if (data.detail.state.loading !== undefined) {
-			loading = data.detail.state.loading;
+	function updateState(stateData) {
+		if (stateData.detail.state.loading !== undefined) {
+			loading = stateData.detail.state.loading;
 		}
 
-		if (data.detail.state.domainSelect !== undefined) {
-			domainSelect = data.detail.state.domainSelect;
+		if (stateData.detail.state.domainSelect !== undefined) {
+			domainSelect = stateData.detail.state.domainSelect;
 		}
 
-		if (data.detail.state.domainSettings !== undefined) {
-			domainSettings = data.detail.state.domainSettings;
+		if (stateData.detail.state.tests !== undefined) {
+			tests = stateData.detail.state.tests;
 		}
 
-		if (data.detail.state.domainAdd !== undefined) {
-			domainAdd = data.detail.state.domainAdd;
+		if (stateData.detail.state.testSettings !== undefined) {
+			testSettings = stateData.detail.state.testSettings;
+			if (testSettings){
+				componentData.settings = stateData.detail.data.settings;
+				componentData.selectedDomain = stateData.detail.data.selectedDomain;
+			}
 		}
 
-		if (data.detail.state.showBack !== undefined) {
-			showBack = data.detail.state.showBack;
+		if (stateData.detail.state.domainAdd !== undefined) {
+			domainAdd = stateData.detail.state.domainAdd;
 		}
 
-		if (data.detail.state.questionsForm !== undefined) {
-			questionsForm = data.detail.state.questionsForm;
+		if (stateData.detail.state.showBack !== undefined) {
+			showBack = stateData.detail.state.showBack;
+		}
+
+		if (stateData.detail.state.questions !== undefined) {
+			questions = stateData.detail.state.questions;
+			if (questions){
+				componentData.settings = stateData.detail.data.settings;
+			}
+		}
+
+		if (stateData.detail.state.questionsForm !== undefined) {
+			questionsForm = stateData.detail.state.questionsForm;
 			if (questionsForm){
-				selectedTest.id = data.detail.data.id;
+				componentData.settings = stateData.detail.data.settings;
+				componentData.questions = stateData.detail.data.questions;
 			}
 		}
 
-		if (data.detail.state.resultInfo !== undefined) {
-			resultInfo = data.detail.state.resultInfo;
-			if (resultInfo){
-				selectedTest.id = data.detail.data.id;
+		if (stateData.detail.state.psyhotypesChartText !== undefined) {
+			psyhotypesChartText = stateData.detail.state.psyhotypesChartText;
+			if (psyhotypesChartText){
+				componentData.settings = stateData.detail.data.settings;
+				componentData.questions = stateData.detail.data.questions;
 			}
 		}
 
-		if (data.detail.state.resultClientInfo !== undefined) {
-			resultClientInfo = data.detail.state.resultClientInfo;
-			if (resultClientInfo){
-				selectedTest.id = data.detail.data.id;
+		if (stateData.detail.state.psyhotypesClientData !== undefined) {
+			psyhotypesClientData = stateData.detail.state.psyhotypesClientData;
+			if (psyhotypesClientData){
+				componentData.settings = stateData.detail.data.settings;
+				componentData.questions = stateData.detail.data.questions;
 			}
 		}
 
-		if (data.detail.state.answers !== undefined) {
-			answers = data.detail.state.answers;
+		if (stateData.detail.state.simpleClientInfo !== undefined) {
+			simpleClientInfo = stateData.detail.state.simpleClientInfo;
+			if (simpleClientInfo){
+				componentData.settings = stateData.detail.data.settings;
+				componentData.questions = stateData.detail.data.questions;
+			}
+		}
+
+		if (stateData.detail.state.answers !== undefined) {
+			answers = stateData.detail.state.answers;
 			if (answers){
-				selectedTest.id = data.detail.data.id;
+				componentData.settings = stateData.detail.data.settings;
+				componentData.questions = stateData.detail.data.questions;
 			}
 		}
 
-		if (data.detail.state.widgetData !== undefined) {
-			widgetData = data.detail.state.widgetData;
+		if (stateData.detail.state.widgetData !== undefined) {
+			widgetData = stateData.detail.state.widgetData;
 			if (widgetData){
-				selectedTest.id = data.detail.data.id;
+				selectedTest.id = stateData.detail.data.id;
 			}
 		}
     }
+
+	let file = null;
+	$:{
+		console.log(file);
+	}
 </script>
 
 <Loader loading={loading}></Loader>
@@ -112,28 +152,40 @@
 	<DomainSelectForm on:updateState={updateState} domains={domains} bind:selectedDomain={selectedDomain} />
 {/if}
 
-{#if domainSettings}
-	<DomainSettingsForm on:updateState={updateState} domains={domains} selectedDomain={selectedDomain}/>
+{#if tests}
+	<Tests on:updateState={updateState} selectedDomain={selectedDomain}/>
+{/if}
+
+{#if testSettings}
+	<SettingsForm on:updateState={updateState} settings={componentData.settings} selectedDomain={componentData.selectedDomain}/>
 {/if}
 
 {#if domainAdd}
 	<DomainAddForm on:updateState={updateState} showBack={showBack}/>
 {/if}
 
+{#if questions}
+	<Questions on:updateState={updateState} settings={componentData.settings}/>
+{/if}
+
 {#if questionsForm}
-	<QuestionsForm on:updateState={updateState} id={selectedTest.id}/>
+	<QuestionsForm on:updateState={updateState} settings={componentData.settings} questions={componentData.questions}/>
 {/if}
 
-{#if resultClientInfo}
-	<ResultClientInfo on:updateState={updateState} id={selectedTest.id}/>
+{#if psyhotypesClientData}
+	<PsyhotypesClientData on:updateState={updateState} settings={componentData.settings} questions={componentData.questions}/>
 {/if}
 
-{#if resultInfo}
-	<ResultInfo on:updateState={updateState} id={selectedTest.id}/>
+{#if psyhotypesChartText}
+	<PsyhotypesChartText on:updateState={updateState} settings={componentData.settings} questions={componentData.questions}/>
+{/if}
+
+{#if simpleClientInfo}
+	<SimpleClientData on:updateState={updateState} settings={componentData.settings} questions={componentData.questions}/>
 {/if}
 
 {#if answers}
-	<Answers on:updateState={updateState} id={selectedTest.id}/>
+	<Answers on:updateState={updateState} questions={componentData.questions} settings={componentData.settings}/>
 {/if}
 
 {#if widgetData}

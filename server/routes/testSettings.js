@@ -1,7 +1,8 @@
 const express = require('express')
 const router = express.Router()
-const Settings = require('../models/testSettings');
-const Questions = require('../models/testQuestions');
+const Settings = require('../models/settings');
+const Questions = require('../models/questions');
+const TestTypes = require('../models/testTypes');
 
 router.use(function(req, res, next) {
 	res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
@@ -29,6 +30,7 @@ router.get('/', (req, res) => {
 })
 
 router.post('/', async (req, res) => {
+	console.log(req.body);
 	const settings = new Settings(req.body);
 	console.log('POST' + settings);
  	try {

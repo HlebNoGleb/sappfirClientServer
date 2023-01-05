@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
+
 router.use(function(req, res, next) {
 	res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
 	res.header("Access-Control-Allow-Headers", "Authorization, Origin, X-Requested-With, Content-Type, Accept");
@@ -13,10 +14,9 @@ router.get('/', (req, res) => {
   	res.send('server is running')
 })
 
-// router.post('/', (req, res) => {
-//   	res.send('Got a POST request')
-// })
-
+router.post('/', (req, res) => {
+  	res.send('Got a POST request')
+})
 // router.put('/user', (req, res) => {
 //   res.send('Got a PUT request at /user')
 // })

@@ -1,0 +1,98 @@
+[
+    {
+        "id":0,
+        "title":"Индивидуалист",
+        "data": [
+            {
+                "name": "",
+                "description": "",
+                "image": "",
+                "link": ""
+            }
+        ]
+    },
+    {
+        "id":1,
+        "title":"Инноватор",
+        "data": [
+            {
+                "name": "",
+                "description": "",
+                "image": "",
+                "link": ""
+            }
+        ]
+    },
+    {
+        "id":2,
+        "title":"Лидер мнений",
+        "data": [
+            {
+                "name": "",
+                "description": "",
+                "image": "",
+                "link": ""
+            }
+        ]
+    },
+    {
+        "id":3,
+        "title":"Модник",
+        "data": [
+            {
+                "name": "",
+                "description": "",
+                "image": "",
+                "link": ""
+            }
+        ]
+    },
+    {
+        "id":4,
+        "title":"Консерватор",
+        "data": [
+            {
+                "name": "",
+                "description": "",
+                "image": "",
+                "link": ""
+            }
+        ]
+    },
+    {
+        "id":5,
+        "title":"Чувственный",
+        "data": [
+            {
+                "name": "",
+                "description": "",
+                "image": "",
+                "link": ""
+            }
+        ]
+    },
+    {
+        "id":6,
+        "title":"Замкнутый",
+        "data": [
+            {
+                "name": "",
+                "description": "",
+                "image": "",
+                "link": ""
+            }
+        ]
+    },
+    {
+        "id":7,
+        "title":"Реалист",
+        "data": [
+            {
+                "name": "",
+                "description": "",
+                "image": "",
+                "link": ""
+            }
+        ]
+    }
+]

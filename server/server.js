@@ -9,6 +9,7 @@ const serveIndex = require('serve-index');
 const cors = require('cors');
 const https = require('https');
 const http = require('http');
+const fileUpload = require('express-fileupload');
 
 mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, autoIndex: true })
 const db = mongoose.connection
@@ -23,19 +24,18 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.use(express.json())
-
+app.use(express.json());
 app.use(cors());
+app.use(fileUpload());
 
-const directoryPath = path.join(__dirname, 'images')
-app.use('/images', express.static(__dirname + '/images'));
+app.use('/uploads', express.static(__dirname + '/uploads'));
 app.use('/public', express.static(__dirname + '/public'));
 app.use('/.well-known', express.static('.well-known'), serveIndex('.well-known'));
 
 const settingsRouter = require('./routes/testSettings')
 app.use('/settings', settingsRouter)
 
-const questionsRouter = require('./routes/testQuestions')
+const questionsRouter = require('./routes/questions')
 app.use('/questions', questionsRouter)
 
 const defaultRouter = require('./routes/default')
@@ -49,6 +49,93 @@ app.use('/answers', answersRouter)
 
 const apiRouter = require('./routes/api')
 app.use('/api', apiRouter)
+
+app.post("/upload", function(req, res){
+    if(!req.files)
+    {
+        res.send("File was not found");
+        return;
+    }
+
+    const files = req.files.sampleFile;
+    const path = req.body.path;
+    const directory = 'uploads/' + path;
+    let result = {
+        errors: [],
+        data: []
+    };
+
+    if (files.length > 1) {
+        files.forEach(file => {
+            let ret = saveFiles(directory, file);
+            console.log(ret);
+
+            if(ret.error){
+                result.errors.push(ret.error);
+            }
+
+            result.data.push(ret.data);
+        });
+
+        res.send(result);
+        return;
+    }
+
+    let ret = saveFiles(directory, files);
+    if(ret.error){
+        result.errors.push(ret.error);
+    }
+    result.data.push(ret.data);
+
+    res.send(result);
+});
+
+function saveFiles(directory, file){
+    if (!fs.existsSync(directory)){
+        fs.mkdirSync(directory, { recursive: true });
+    }
+
+    fs.writeFileSync(`${directory}/${file.name}/`, file.data, function (error) {
+        if (error) {
+            console.log(error);
+        }
+    });
+
+     const retObj = {
+        data: `Файл ${file.name} сохранен`
+     }
+
+    return retObj;
+}
+
+
+app.get("/getFiles", function(req, res){
+    const path = req.query.path;
+    const directory = 'uploads/' + path;
+    console.log("dir---" + directory)
+    if (fs.existsSync(directory)){
+        console.log(1);
+        let images = fs.readdirSync(directory, (err, files) => {
+            const fileNames = [];
+            files.forEach(file => {
+                fileNames.push(file);
+            });
+
+            return fileNames;
+        });
+        const result = {
+            path: directory,
+            images: images
+        };
+
+        console.log(result);
+        res.send(result);
+        return;
+    }
+
+    res.send({error: "no data"});
+});
+
 
 
 app.listen(81, () => console.log('Server Started'))

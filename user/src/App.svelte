@@ -5,6 +5,7 @@
     import Chart from './components/chart.svelte';
     import ChartInfo from './components/chartInfo.svelte';
     import ClientInfo from './components/clientInfo.svelte';
+    import defaultTestTypes from '../src/assets/testTypes.json';
 
     let questions = null;
     let settings = null;
@@ -23,6 +24,7 @@
     let chartData = {};
     let psychotypesData = {};
     let clientInfo = {};
+    let simpleClientData = "";
     let key = null;
 
     onMount(async () => {
@@ -89,10 +91,13 @@
     let selected = [];
 
     async function saveData(e){
-        if (Object.keys(selected).length < questions.questions.length){
-            alert("Вы ответили не на все вопросы")
-            return;
-        }
+
+        // разбить на методы в зависимости от типа теста
+
+        // if (Object.keys(selected).length < questions.questions.length){
+        //     alert("Вы ответили не на все вопросы")
+        //     return;
+        // }
 
         loading = true;
 
@@ -103,10 +108,12 @@
         }
 
         let dataObj = {
-            testId:key,
-            selected: selected,
-            data:userData,
+            questionsId: questions._id,
+            selected: fortest,//selected,
+            userData:userData,
         }
+
+        console.log(selected);
 
         const res = await fetch(`${config.serverUrl}/api/`, {
             method: 'POST',
@@ -151,14 +158,16 @@
         chartData = [];
         psychotypesData = [];
         clientInfo = [];
-        window.scrollTo(0, 0);
+        simpleClientData = "";
+        // window.scrollTo(0, 0);
         await new Promise(resolve => setTimeout(resolve, 1000));
-        showQuestions = false;
+        // showQuestions = false;
         showResult = true;
         loading = false;
-        chartData = result.sum;
-        psychotypesData = result.psychotypesData;
-        clientInfo = result.clientInfo;
+        chartData = result.graphData;
+        psychotypesData = result.psyhotypesChartText;
+        clientInfo = result.psyhotypesClientData;
+        simpleClientData = result.simpleClientData
     }
 
 </script>
@@ -176,16 +185,26 @@
                         <div class="col my-2" >
                             {#if verticalMode}
                                 <div class="card">
-                                    <img src="https://picsum.photos/200" class="card-img-top" alt="">
+                                    <img src="{config.serverUrl}/{question.image}" class="card-img-top" alt="">
                                     <div class="card-body">
-                                        <h5 class="card-title">Вопрос  #{question.id}</h5>
-                                        <p class="card-text">{question.value}</p>
-                                        {#each questions.answers as answer}
-                                            <div class="form-check">
-                                                <input class="form-check-input" bind:group={selected[i]} type="radio" value="{answer.id}" checked id="{question.id}_{answer.id}">
-                                                <label class="form-check-label" for="{question.id}_{answer.id}">{answer.value}</label>
-                                            </div>
-                                        {/each}
+                                        <h5 class="card-title">Вопрос  #{i+1}</h5>
+                                        {#if settings.testTypeId == defaultTestTypes[0].id}
+                                            <p class="card-text">{question.text}</p>
+                                            {#each questions.answers as answer, j}
+                                                <div class="form-check">
+                                                    <input class="form-check-input" bind:group={selected[i]} type="radio" value="{j + 1}" checked id="{i}_{j}">
+                                                    <label class="form-check-label" for="{i}_{j}">{answer}</label>
+                                                </div>
+                                            {/each}
+                                        {:else}
+                                            <p class="card-text">{question.question}</p>
+                                            {#each question.answers as answer, j}
+                                                <div class="form-check">
+                                                    <input class="form-check-input" bind:group={selected[i]} type="radio" value="{j + 1}" checked id="{i}_{j}">
+                                                    <label class="form-check-label" for="{i}_{j}">{answer}</label>
+                                                </div>
+                                            {/each}
+                                        {/if}
                                     </div>
                                 </div>
                             {:else}
@@ -196,14 +215,24 @@
                                         </div>
                                         <div class="col-md-8">
                                             <div class="card-body">
-                                                <h5 class="card-title">Вопрос  #{question.id}</h5>
-                                                <p class="card-text">{question.value}</p>
-                                                {#each questions.answers as answer}
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" bind:group={selected[i]} type="radio" value="{answer.id}" checked id="{question.id}_{answer.id}">
-                                                        <label class="form-check-label" for="{question.id}_{answer.id}">{answer.value}</label>
-                                                    </div>
-                                                {/each}
+                                                <h5 class="card-title">Вопрос  #{i+1}</h5>
+                                                {#if settings.testTypeId == defaultTestTypes[0].id}
+                                                    <p class="card-text">{question}</p>
+                                                    {#each questions.answers as answer, j}
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" bind:group={selected[i]} type="radio" value="{j + 1}" checked id="{i}_{j}">
+                                                            <label class="form-check-label" for="{i}_{j}">{answer}</label>
+                                                        </div>
+                                                    {/each}
+                                                {:else}
+                                                    <p class="card-text">{question.question}</p>
+                                                    {#each question.answers as answer, j}
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" bind:group={selected[i]} type="radio" value="{j + 1}" checked id="{i}_{j}">
+                                                            <label class="form-check-label" for="{i}_{j}">{answer}</label>
+                                                        </div>
+                                                    {/each}
+                                                {/if}
                                             </div>
                                         </div>
                                     </div>
@@ -285,18 +314,21 @@
         <p>no data</p>
     {/if}
     {#if showResult}
-        <div class="container" style="background-color:{settings.color.mainColor}">
-            {#if settings.resultSettings.Chart}
+        <div class="container">
+            {#if settings.resultSettings.Chart && chartData}
                 <Chart chartData={chartData}/>
             {/if}
-            {#if settings.resultSettings.Info}
+            {#if settings.resultSettings.Info && psychotypesData}
                 <ChartInfo psychotypesData={psychotypesData}/>
             {/if}
-            {#if settings.resultSettings.ClientInfo}
+            {#if settings.resultSettings.ClientInfo && clientInfo}
                 <ClientInfo clientInfo={clientInfo}/>
             {/if}
             {#if settings.resultSettings.AfterTextToggle}
                 {@html settings.resultSettings.AfterText}
+            {/if}
+            {#if simpleClientData}
+                {@html simpleClientData}
             {/if}
         </div>
     {/if}
