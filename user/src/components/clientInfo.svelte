@@ -1,4 +1,5 @@
 <script>
+    import config from "../assets/config";
     export let clientInfo;
     console.log(clientInfo);
 </script>
@@ -8,7 +9,7 @@
         {#each psychotype.data as dataItem}
                 <div class="col my-2" >
                     <div class="card">
-                        <img src="https://picsum.photos/200" class="card-img-top" alt="">
+                        <img src="{config.serverUrl}/{dataItem.image}" class="card-img-top" alt="">
                         <div class="card-body">
                             <h5 class="card-title">{dataItem.name}</h5>
                             <p class="card-text">{dataItem.description}</p>

@@ -5,6 +5,8 @@
     import {createEventDispatcher} from 'svelte';
     import psyhotypesClientData from "../assets/defaultData/psyhotypesClientData.json"
     import PsyhotypesChartText from './psyhotypesChartText.svelte';
+    import FormFileView from './common/formFileView.svelte';
+    import Modal from './common/modal.svelte';
     const dispatch = createEventDispatcher();
     export let settings;
     export let questions;
@@ -76,9 +78,50 @@
         return null;
     }
 
+    let showFiles = false;
+    let selectedImage = null;
+    let selectedInput = null;
+
+    function getSelectedImage(data) {
+       const selectedInputId = selectedInput.getAttribute("id");
+       selectedImage = data.detail;
+       selectedInput.value = selectedImage;
+
+       var event = new Event('input');
+       selectedInput.dispatchEvent(event);
+
+       selectedInput.value = selectedImage;
+
+       const previewImage = document.getElementById(`preview-${selectedInputId}`);
+    //    previewImage.src = config.serverUrl + "/" + data.detail;
+
+       showFiles = false;
+       console.log(questions.questions[0]);
+    }
+
+    function selectImage(e) {
+        const selectedInputId = e.target.getAttribute("data-id");
+        console.log(selectedInputId);
+        const input = document.getElementById(selectedInputId);
+
+        if (!input) {
+            console.log("Нет инпута")
+            return;
+        }
+
+        selectedInput = input;
+        showFiles = true;
+    }
+
 </script>
 
 <div class="container">
+    <Modal bind:show={showFiles}>
+        <span slot="popup-header">Выберите изображение</span>
+        <div slot="popup-content">
+            <FormFileView path={`${questions._id}/psyhotypesClientData`} on:select={getSelectedImage}/>
+        </div>
+    </Modal>
     <form on:submit|preventDefault={saveQuestionsData}>
         {#each questions.psyhotypesClientData as item, i}
             <div class="col my-2">
@@ -99,7 +142,14 @@
                                         </div>
                                         <div class="mb-3">
                                             <label for="image_{item.id}_{j}" class="form-label">Картинка</label>
-                                            <input type="text" class="form-control" bind:value="{itemInput.image}" id="image_{item.id}_{j}">
+                                            <input type="hidden" class="form-control" bind:value="{itemInput.image}" id="image_{item.id}_{j}">
+                                            {#if itemInput.image}
+                                                <div class="flex">
+                                                    <img alt="" src={config.serverUrl + "/" + itemInput.image} id="preview-image_{item.id}_{j}" style="max-width: 200px; margin-bottom: 10px;" />
+                                                    <button type="button" class="btn btn-danger" data-id="image_{item.id}_{j}" on:click={() => itemInput.image = ""}>Удалить</button>
+                                                </div>
+                                            {/if}
+                                            <button type="button" class="btn btn-primary" data-id="image_{item.id}_{j}" on:click={selectImage}>Выбрать изображение</button>
                                         </div>
                                         <div class="mb-3">
                                             <label for="link_{item.id}_{j}" class="form-label">Ссылка</label>

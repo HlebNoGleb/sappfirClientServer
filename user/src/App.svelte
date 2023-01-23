@@ -211,13 +211,13 @@
                                 <div class="card mb-3">
                                     <div class="row g-0">
                                         <div class="col-md-4">
-                                            <img src="https://picsum.photos/200" class="card-img-top" alt="">
+                                            <img src="{config.serverUrl}/{question.image}" class="card-img-top" alt="">
                                         </div>
                                         <div class="col-md-8">
                                             <div class="card-body">
                                                 <h5 class="card-title">Вопрос  #{i+1}</h5>
                                                 {#if settings.testTypeId == defaultTestTypes[0].id}
-                                                    <p class="card-text">{question}</p>
+                                                    <p class="card-text">{question.text}</p>
                                                     {#each questions.answers as answer, j}
                                                         <div class="form-check">
                                                             <input class="form-check-input" bind:group={selected[i]} type="radio" value="{j + 1}" checked id="{i}_{j}">
