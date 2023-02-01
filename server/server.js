@@ -73,6 +73,8 @@ app.post("/upload", function(req, res){
         data: []
     };
 
+    console.log(files.length);
+
     if (files.length > 1) {
         files.forEach(file => {
             let ret = saveFiles(directory, file);
