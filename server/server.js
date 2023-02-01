@@ -92,6 +92,7 @@ app.post("/upload", function(req, res){
     }
 
     let ret = saveFiles(directory, files);
+    console.log(ret);
     if(ret.error){
         result.errors.push(ret.error);
     }
