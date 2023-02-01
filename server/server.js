@@ -24,6 +24,14 @@ app.use(function(req, res, next) {
     next();
 });
 
+process.on('uncaughtException', (err, origin) => {
+    //code to log the errors
+    console.log(
+       `Caught exception: ${err}\n` +
+       `Exception origin: ${origin}`,
+     );
+});
+
 app.use(express.json());
 app.use(cors());
 app.use(fileUpload());
