@@ -1,6 +1,5 @@
 <script>
 // @ts-nocheck
-
     import {createEventDispatcher} from 'svelte';
     import {onMount} from "svelte";
     import config from "../../assets/config.js";
@@ -8,10 +7,90 @@
     import PsyhotypesChart from '../common/psyhotypesChart.svelte';
     import defaultTestTypes from '../../assets/defaultData/testTypes.json';
     import { objectHelper } from '../../assets/objectsHelper';
+    import xlsx from 'json-as-xlsx';
     const dispatch = createEventDispatcher();
 
     export let questions;
     export let settings;
+
+    function ExportToExcel(type, fn, dl) {
+       var elt = document.getElementById('testTable');
+       var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" }, {display: true});
+       return dl ?
+         XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }):
+         XLSX.writeFile(wb, fn || (`${settings.name}.` + (type || 'xlsx')));
+    }
+
+
+    let xlsxSettings = {
+        fileName: "Sappfir test", // Name of the resulting spreadsheet
+        extraLength: 10, // A bigger number means that columns will be wider
+        writeMode: 'writeFile', // The available parameters are 'WriteFile' and 'write'. This setting is optional. Useful in such cases https://docs.sheetjs.com/docs/solutions/output#example-remote-file
+        writeOptions: {}, // Style options from https://github.com/SheetJS/sheetjs#writing-options
+        RTL: false, // Display the columns from right-to-left (the default value is false)
+    }
+
+    function getExcelTableHeader(data) {
+        let allKeys = objectHelper.getAllKeys(data);
+        let header = [];
+
+        let testTypeId = questions.testTypeId;
+
+        console.log(allKeys);
+
+        // РАЗДЕЛИТЬ МАССИВ ПСИХОТИПОВ ДЛЯ ХЕДЕРА И БОДИ
+
+        allKeys.forEach(function (e) {
+            let headerSettings = answersModel.find(x=>x.key == e);
+            if (headerSettings && headerSettings.showInTable[testTypeId]) {
+                header.push({key: headerSettings.key, showKey: headerSettings.showKey});
+            }
+        });
+
+        return header;
+    }
+
+    function getExcelTableBody(data) {
+        const excelBody = [];
+        data.forEach(answer => {
+            let body = [];
+
+            tableHeader.forEach(th => {
+                let data = objectHelper.getNestedValue(th.key, answer);
+                body.push(data.length > 0 ? data : 'Нет данных');
+            });
+
+            excelBody.push(body);
+        });
+
+        console.log(excelBody);
+    }
+
+    function downloadExcel(params) {
+        let obj = {}
+        obj.sheet = '';
+
+        Object.assign(obj, test)
+        console.log(obj);
+        let testCol = getExcelTableHeader();
+        // xlsx([obj], settings)
+
+        console.log(testCol);
+        console.log(testContent);
+    }
+
+    var test = {
+        sheet: "Adults",
+        columns: [
+            { label: "User", value: "user" }, // Top level data
+            { label: "Age", value: (row) => row.age + " years" }, // Custom format
+            { label: "Phone", value: (row) => (row.phone ? row.phone || "" : "") }, // Run functions
+        ],
+        content: [
+            { user: "Andrea", age: 20, phone: "2343243243" },
+            { user: "Luis", age: 21 },
+        ],
+    }
 
     console.log(questions);
 
@@ -302,7 +381,7 @@
         <div class="col" style="max-width: 100%;">
             <h1>Ответы - {settings.name} - {defaultTestTypes.find(x=>x.id == questions.testTypeId).name}</h1>
             <div class="table-responsive">
-                <table class="table table-striped">
+                <table class="table table-striped" id="testTable">
                     <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -330,6 +409,7 @@
                 </table>
             </div>
             <button type="button" class="btn btn-outline-primary" on:click={() => goBack()}>Назад</button>
+            <button type="button" class="btn btn-outline-primary" on:click={() => ExportToExcel()}>Скачать excel</button>
         </div>
     </div>
 {:else}

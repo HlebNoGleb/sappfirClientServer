@@ -94,10 +94,10 @@
 
         // разбить на методы в зависимости от типа теста
 
-        // if (Object.keys(selected).length < questions.questions.length){
-        //     alert("Вы ответили не на все вопросы")
-        //     return;
-        // }
+        if (Object.keys(selected).length < questions.questions.length){
+            alert("Вы ответили не на все вопросы")
+            return;
+        }
 
         loading = true;
 
@@ -109,7 +109,7 @@
 
         let dataObj = {
             questionsId: questions._id,
-            selected: fortest,//selected,
+            selected: selected,//fortest,
             userData:userData,
         }
 
@@ -159,9 +159,9 @@
         psychotypesData = [];
         clientInfo = [];
         simpleClientData = "";
-        // window.scrollTo(0, 0);
+        window.scrollTo(0, 0);
         await new Promise(resolve => setTimeout(resolve, 1000));
-        // showQuestions = false;
+        showQuestions = false;
         showResult = true;
         loading = false;
         chartData = result.graphData;
@@ -254,25 +254,25 @@
                     {#if settings.userData.Name}
                         <div class="mb-3">
                             <label for="Name">Имя</label>
-                            <input type="text" class="form-control" id="Name" name="Name" placeholder="Введите ваше имя" />
+                            <input type="text" class="form-control" id="Name" name="Name" required placeholder="Введите ваше имя" />
                         </div>
                     {/if}
                     {#if settings.userData.FName}
                         <div class="mb-3">
                             <label for="FName">Фамилия</label>
-                            <input type="text" class="form-control" id="FName" name="FName" placeholder="Введите вашу фамилию" />
+                            <input type="text" class="form-control" id="FName" name="FName" required placeholder="Введите вашу фамилию" />
                         </div>
                     {/if}
                     {#if settings.userData.Email}
                         <div class="mb-3">
                             <label for="Email">E-mail</label>
-                            <input type="email" class="form-control" id="Email" name="Email" placeholder="Введите вашу почту" />
+                            <input type="email" class="form-control" id="Email" name="Email" required placeholder="Введите вашу почту" />
                         </div>
                     {/if}
                     {#if settings.userData.Phone}
                         <div class="mb-3">
                             <label for="Phone">Телефон</label>
-                            <input type="phone" class="form-control" id="Phone" name="Phone" placeholder="Введите вашу почту" />
+                            <input type="phone" class="form-control" id="Phone" name="Phone" required placeholder="Введите вашу почту" />
                         </div>
                     {/if}
                     {#if settings.userData.Age}
@@ -280,7 +280,7 @@
                             <label for="">Выберите ваш возраст</label>
                             {#each agesGroupArray as ageGroup, i}
                                 <div class="form-check mb-1">
-                                    <input class="form-check-input" name="Age" type="radio" value={ageGroup} id="ageGroup-{i}" >
+                                    <input class="form-check-input" required name="Age" type="radio" value={ageGroup} id="ageGroup-{i}" >
                                     <label class="form-check-label" for="ageGroup-{i}">{ageGroup}</label>
                                 </div>
                             {/each}
@@ -291,7 +291,7 @@
                             <label for="">Выберите ваш пол</label>
                             {#each sexArray as sex, i}
                                 <div class="form-check mb-1">
-                                    <input class="form-check-input" name="Sex" type="radio" value={sex} id="sex-{i}" >
+                                    <input class="form-check-input" required name="Sex" type="radio" value={sex} id="sex-{i}" >
                                     <label class="form-check-label" for="sex-{i}">{sex}</label>
                                 </div>
                             {/each}
@@ -299,7 +299,7 @@
                     {/if}
                     {#if settings.userData.AgreeFL}
                         <div class="form-check mb-3">
-                            <input class="form-check-input" name="AgreeFl" id="agreeFL" type="checkbox" >
+                            <input class="form-check-input" required name="AgreeFl" id="agreeFL" type="checkbox" >
                             <label class="form-check-label" for="agreeFL">Я согласен с ФЗ-152</label>
                         </div>
                     {/if}
